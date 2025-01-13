@@ -130,3 +130,42 @@ int main() {
 
     return 0;
 }
+
+//Wrong usage of memset 
+#include <iostream>
+#include <cstring>
+
+struct Node {
+    int value;
+    Node* next;  // Pointer to the same type as the structure itself (Node)
+};
+
+int main() {
+    Node node1;
+    memset(&node1, 0, sizeof(Node));  // Memset initializes all bytes to 0
+
+    std::cout << node1.value << std::endl;  // Should print 0, since it's correctly set by memset
+    std::cout << node1.next << std::endl;   // This is problematic! Prints 0 (nullptr)
+
+    return 0;
+}
+
+//Correct Approach
+#include <iostream>
+
+struct Node {
+    int value;
+    Node* next;  // Pointer to the same type as the structure itself (Node)
+
+    Node() : value(0), next(nullptr) {}  // Initialize pointer to nullptr
+};
+
+int main() {
+    Node node1;  // Using constructor to ensure proper initialization
+
+    std::cout << node1.value << std::endl;  // Prints 0
+    std::cout << node1.next << std::endl;   // Prints 0 (nullptr)
+
+    return 0;
+}
+
