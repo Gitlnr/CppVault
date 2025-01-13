@@ -1,1 +1,69 @@
+why memset() is used?
+memset() function is used to fill a block of memory with particular value and that value can only be either 0 or -1 and it always requires a library #include <cstring>
 
+Example1: Explains the reason for using memset
+#include <iostream>
+#include <cstring> //library for memset
+using namespace std;
+int main()
+{
+    // problem 1.
+    /*int a[10]={0};
+    cout<<a[5]<<endl;
+    
+    int b[10]={21};  // method wrong ... and luckily valid for only 0 (zero )
+    cout<<b[5]<<endl;  */
+    
+    // problem 2.
+   /* int n ; cin>>n;
+    int a[n]={0};
+    cout<<a[5]<<endl; */
+    
+    // solution of these problem
+    // memset ()
+    int n;
+    cout<<"Input the size of array"<<endl;
+    cin>>n;
+    int a[n]; // block name --- a
+//The array is automatically treated as a pointer to its first element when passed to functions, so you can pass val directly without the need for &
+    memset(a,0 ,sizeof(a));  // value --> 0 or  -1
+    cout<<a[4]<<endl;
+    
+    int val[9];
+    memset(val, -1 , sizeof(val));
+    for(int i=0;i<9;i++)
+    {
+        cout<<val[i]<<" ";
+    }
+    cout<<endl;
+    
+}
+
+Example2:
+#include <iostream>
+#include <cstring> // For memset
+
+// Define a structure with different data types
+struct MyStruct {
+    int intValue;
+    float floatValue;
+    char charValue;
+    bool boolValue;
+};
+
+int main() {
+    MyStruct myStruct;
+
+    // Initialize the structure with 0 using memset
+//A structure, on the other hand, is an object and needs to be passed by reference (i.e., with &) if you want memset to modify the structure in place. 
+//Without &, you would pass a copy of the structure, and memset would modify the copy, not the original structure.
+    std::memset(&myStruct, 0, sizeof(MyStruct)); //for structure always pass the address thats the refernce &
+
+    // Print the initialized values
+    std::cout << "intValue: " << myStruct.intValue << std::endl;
+    std::cout << "floatValue: " << myStruct.floatValue << std::endl;
+    std::cout << "charValue: " << static_cast<int>(myStruct.charValue) << std::endl; // Print char as int for clarity
+    std::cout << "boolValue: " << myStruct.boolValue << std::endl;
+
+    return 0;
+}
