@@ -67,3 +67,66 @@ int main() {
 
     return 0;
 }
+
+
+Important Note : Do not use memset 
+1)The memset function works on raw memory and sets each byte to a specific value (in this case, 0).
+While it is fine for simple POD (Plain Old Data) types like int, char, or float, it is not safe for objects like std::string, which manage memory dynamically.
+
+2)Why memset Is Problematic with Pointers:
+1)A pointer variable in a structure holds a memory address (a raw address, typically a void*, int*, etc.).
+2)Using memset will set the address value of the pointer to 0, which essentially makes it a null pointer.
+3)This means that after applying memset, all pointer members of the structure will be set to nullptr (or 0), 
+which is not usually the intended behavior, as you may lose the actual pointer values
+
+Instead use this method .
+#include <iostream>
+#include <cstring>  // For memset (but avoid using it with pointers)
+using namespace std;
+
+struct Smartphone {
+    string modelName;
+    int* memorySize;  // Pointer to int
+    string color;
+    float* price;     // Pointer to float
+
+    // Constructor to initialize pointer members
+    Smartphone() : memorySize(nullptr), price(nullptr) {}
+    
+    // Destructor to free dynamically allocated memory
+    ~Smartphone() {
+        delete memorySize;
+        delete price;
+    }
+};
+
+void printSmartPhoneInfo(const Smartphone& smartphone) {
+    cout << smartphone.modelName << endl;
+    if (smartphone.memorySize)
+        cout << *smartphone.memorySize << endl;
+    else
+        cout << "Memory not initialized" << endl;
+
+    cout << smartphone.color << endl;
+
+    if (smartphone.price)
+        cout << *smartphone.price << endl;
+    else
+        cout << "Price not initialized" << endl;
+}
+
+int main() {
+    // Create a Smartphone object
+    Smartphone smartphone1;
+
+    // Initialize pointer members properly
+    smartphone1.memorySize = new int(128);
+    smartphone1.price = new float(999.99);
+
+    smartphone1.modelName = "Iphone14";
+    smartphone1.color = "Purple";
+
+    printSmartPhoneInfo(smartphone1);
+
+    return 0;
+}
