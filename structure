@@ -17,11 +17,23 @@ struct Smartphone {
   float price;
 };
 
+struct PersonDetail {
+  string name;
+  int age ;
+  Smartphone smartphone;
+};
+
 void printSmartPhoneInfo(Smartphone smartphone){
  cout << smartphone.modelName << endl; 
  cout << smartphone.memorySize << endl; 
  cout << smartphone.color  << endl; 
  cout << smartphone.price  << endl; 
+}
+
+void printPersonDetail(PersonDetail person){
+ cout << person.name << endl; 
+ cout << person.age << endl; 
+ printSmartPhoneInfo(person.smartphone); 
 }
 int main(){
   Smartphone smartphone1;
@@ -44,6 +56,14 @@ int main(){
   smartphone2.price =  999;
 
   printSmartPhoneInfo(smartphone2);
+  cout<<endl;
+
+  PersonDetail p;
+  p.name = "Rahul";
+  p.age = 28;
+  p.smartphone = smartphone2;
+
+  printPersonDetail(p);
   
   return 0;
 }
