@@ -65,7 +65,7 @@ int main() {
     t2.join(); //join() ensures the main thread waits for t1 and t2 to finish execution.
     return 0;
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Q2: How do you avoid deadlocks in C++ multithreading?
 A deadlock occurs when two or more threads are waiting for each other to release locks, preventing further progress.
 Strategies to Avoid Deadlocks:
@@ -145,3 +145,30 @@ int main() {
     return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+What are condition variables?
+A condition variable is used to block one or more threads until a specific condition is met, allowing efficient thread synchronization.
+Example:
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+std::mutex mtx;
+std::condition_variable cv;
+bool ready = false;
+
+void printMessage() {
+    std::unique_lock<std::mutex> lock(mtx);
+    cv.wait(lock, [] { return ready; });
+    std::cout << "Condition met, thread proceeding." << std::endl;
+}
+int main() {
+    std::thread t(printMessage);
+    {
+        std::lock_guard<std::mutex> lock(mtx);
+        ready = true;
+    }
+    cv.notify_one();//Without cv.notify_one() (or cv.notify_all()), these threads will remain waiting indefinitely, because there is no signal to wake them up.
+    t.join();
+    return 0;
+}
