@@ -1,1 +1,49 @@
+What is structure ?
+Structure a collection of variable of different datatypes.
 
+Uses cases ?
+For example I know the smartphone has model name, memory size,color ,price .Instead of creating a same dataypes again and again to get rid of this C/C++ structure(struct) is used.
+
+Example:
+#include <iostream>
+#include <string>
+#include <cstring>
+using namespace std;
+
+struct Smartphone {
+  string modelName;
+  int memorySize;
+  string color;
+  float price;
+};
+
+void printSmartPhoneInfo(Smartphone smartphone){
+ cout << smartphone.modelName << endl; 
+ cout << smartphone.memorySize << endl; 
+ cout << smartphone.color  << endl; 
+ cout << smartphone.price  << endl; 
+}
+int main(){
+  Smartphone smartphone1;
+ // memset(&smartphone1 ,0, sizeof(Smartphone));//memset was removed as it is not appropriate for initializing non-POD types like std::string
+//While it is fine for simple POD (Plain Old Data) types like int, char, or float, it is not safe for objects like std::string, which manage memory dynamically.
+
+  smartphone1.modelName = "Iphone14";
+  smartphone1.memorySize = 128;
+  smartphone1.color = "Purple";
+  smartphone1.price =  999.9;
+
+  printSmartPhoneInfo(smartphone1);
+  cout<<endl;
+  Smartphone smartphone2;
+ // memset(&smartphone2 ,0, sizeof(Smartphone));
+
+  smartphone2.modelName = "Galaxy S4";
+  smartphone2.memorySize = 128;
+  smartphone2.color = "Blue";
+  smartphone2.price =  999;
+
+  printSmartPhoneInfo(smartphone2);
+  
+  return 0;
+}
