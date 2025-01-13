@@ -1,1 +1,5 @@
+Why concurrency ?
+1)Performance 2)Separation of concerns ( for example : in a music system if a GUI ,audio ,video uses a single thread then it takes some time for loading.
+To overcome this problem we use concurrency by creating a separate thread for each task)
+
 
