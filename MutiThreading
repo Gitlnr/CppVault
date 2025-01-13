@@ -2,4 +2,146 @@ Why concurrency ?
 1)Performance 2)Separation of concerns ( for example : in a music system if a GUI ,audio ,video uses a single thread then it takes some time for loading.
 To overcome this problem we use concurrency by creating a separate thread for each task)
 
+Q1) what is multhithreading ?
+Multithreading in C++ allows multiple threads to run concurrently within a single process, enabling parallelism and better utilization of CPU resources.
+Key Points:
+1)Threads share the same memory space.
+2)Multithreading reduces program execution time for CPU-bound tasks.
+3)Introduced in C++11 using std::thread.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Example1 : The below code is not amutithreading ,it just performs 2 different tasks. 
+#include <iostream>
+using namespace std;
+void function1(char symbol){
+  cout<< symbol;
+}
+void function2(char symbol){
+  cout<< symbol;
+}
+int main(){
+  function1('+');function2('-');
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Example2 : Multithreading
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+mutex gameMutex;
+
+void playerStatus (const string& name){
+  lock_guard<mutex>gameLock(gameMutex);//this automatically performs locking and unlocking action //if this not used there will be over lapping
+  //unique_lock<mutex>gameLock(gameMutex);//manual locking
+  cout<< name << " is palying game" << endl;
+  cout<< name << " has completed palying game" << endl;
+  //gameLock.unlock();//manual unlocking
+}
+
+int main(){
+  thread t1 (playerStatus, "Rahul"); //create a new thread use a function name and pass parameter
+  thread t2 (playerStatus, "Rohan");
+  t1.join(); //join() ensures the main thread waits for t1 and t2 to finish execution.
+  t2.join(); //join() ensures the main thread waits for t1 and t2 to finish execution.
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Example3 : Multithreading
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+mutex messageMutex;
+void printMessage(const string& message) {
+    lock_guard <mutex> messageLock(messageMutex);
+    cout << message << endl;
+    cout << message << "How are you?" << endl;
+}
+int main() {
+    thread t1(printMessage, "Hello from Thread 1");//thread creates new threads.
+    thread t2(printMessage, "Hello from Thread 2");
+    t1.join(); //join() ensures the main thread waits for t1 and t2 to finish execution.
+    t2.join(); //join() ensures the main thread waits for t1 and t2 to finish execution.
+    return 0;
+}
+
+Q2: How do you avoid deadlocks in C++ multithreading?
+A deadlock occurs when two or more threads are waiting for each other to release locks, preventing further progress.
+Strategies to Avoid Deadlocks:
+Lock Ordering: Ensure all threads acquire locks in the same order.
+Use std::lock: Prefer std::lock to acquire multiple locks simultaneously.
+Avoid Nested Locks: Minimize locking in nested or dependent functions.
+Try-Lock Mechanism: Use std::unique_lock with try_lock.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Example1 : whcih causes deadlock
+#include <iostream>
+#include <thread>
+#include <mutex>
+std::mutex mutex1, mutex2;
+void thread1() {
+    std::lock_guard<std::mutex> lock1(mutex1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::lock_guard<std::mutex> lock2(mutex2); // Deadlock risk
+}
+void thread2() {
+    std::lock_guard<std::mutex> lock2(mutex2);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::lock_guard<std::mutex> lock1(mutex1); // Deadlock risk
+}
+int main() {
+    std::thread t1(thread1);
+    std::thread t2(thread2);
+    t1.join();
+    t2.join();
+    return 0;
+}
+
+Soution : To overcome deadlock
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+
+std::mutex mutex1, mutex2;
+
+// Thread 1 function
+void thread1() {
+    // Use std::lock to acquire both mutexes in a single atomic operation
+    std::lock(mutex1, mutex2);
+    // Use std::adopt_lock to indicate that the mutexes are already locked
+    std::lock_guard<std::mutex> lock1(mutex1, std::adopt_lock);
+    std::lock_guard<std::mutex> lock2(mutex2, std::adopt_lock);
+    std::cout << "Thread 1: Locked both mutexes" << std::endl;
+    // Simulate work
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::cout << "Thread 1: Released both mutexes" << std::endl;
+}
+
+// Thread 2 function
+void thread2() {
+    // Use std::lock to acquire both mutexes in a single atomic operation
+    std::lock(mutex1, mutex2);
+
+    // Use std::adopt_lock to indicate that the mutexes are already locked
+    std::lock_guard<std::mutex> lock1(mutex1, std::adopt_lock);
+    std::lock_guard<std::mutex> lock2(mutex2, std::adopt_lock);
+
+    std::cout << "Thread 2: Locked both mutexes" << std::endl;
+    // Simulate work
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::cout << "Thread 2: Released both mutexes" << std::endl;
+}
+
+int main() {
+    // Create two threads
+    std::thread t1(thread1);
+    std::thread t2(thread2);
+    // Wait for threads to complete
+    t1.join();
+    t2.join();
+    std::cout << "Both threads completed without deadlock" << std::endl;
+    return 0;
+}
 
