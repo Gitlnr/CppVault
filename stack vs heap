@@ -13,12 +13,12 @@
   - The system automatically frees stack memory once the function exits.
 
 - **Usage Example:**
-  ```cpp
+  cpp
   void func() {
       int x = 10; // Allocated on the stack
       char buffer[256]; // Allocated on the stack
   } // Memory for x and buffer is automatically freed when func returns
-  ```
+
 
 - **Limitations:**
   - Limited in size (stack size is generally small, often a few MB).
@@ -40,13 +40,13 @@
   - Failure to free heap memory can lead to **memory leaks**.
 
 - **Usage Example:**
-  ```cpp
+  cpp
   void func() {
       int* ptr = new int;  // Allocated on the heap
       *ptr = 42;
       delete ptr; // Manually freed
   }
-  ```
+
 
 - **Advantages:**
   - Allows allocation of large blocks of memory.
@@ -55,8 +55,6 @@
 - **Disadvantages:**
   - More prone to errors like memory leaks, double deletion, or dangling pointers.
   - Slower compared to stack allocation.
-
----
 
 ### **Key Differences Between Stack and Heap Allocation**
 | **Aspect**           | **Stack Memory**                       | **Heap Memory**                 |
