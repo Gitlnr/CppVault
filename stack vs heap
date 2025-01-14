@@ -1,1 +1,71 @@
+### **1. Stack Memory Allocation**
+- **Characteristics:**
+  - Stack memory is used for **static or automatic memory allocation**.
+  - Memory on the stack is allocated and deallocated automatically when functions are called and return.
+  - The size of the variables (e.g., local variables, function parameters) is known at **compile time**.
+  - The lifetime of variables allocated on the stack is tied to the **scope** of the function or block.
+
+- **Performance:**
+  - Stack allocation is **very fast** because it involves simple pointer arithmetic (moving the stack pointer).
+  - No explicit action is needed from the programmer to allocate or deallocate memory.
+
+- **Memory Management:**
+  - The system automatically frees stack memory once the function exits.
+
+- **Usage Example:**
+  ```cpp
+  void func() {
+      int x = 10; // Allocated on the stack
+      char buffer[256]; // Allocated on the stack
+  } // Memory for x and buffer is automatically freed when func returns
+  ```
+
+- **Limitations:**
+  - Limited in size (stack size is generally small, often a few MB).
+  - Cannot allocate objects with lifetimes beyond the function’s execution.
+
+---
+
+### **2. Heap Memory Allocation**
+- **Characteristics:**
+  - Heap memory is used for **dynamic memory allocation**.
+  - The memory is allocated explicitly by the programmer at runtime using `new`, `malloc`, or similar functions.
+  - The size of the data can be determined at **runtime**.
+
+- **Performance:**
+  - Heap allocation is slower compared to stack allocation because it involves more complex operations, such as searching for free blocks of memory.
+
+- **Memory Management:**
+  - The programmer must explicitly **free the memory** when it is no longer needed using `delete` or `free`.
+  - Failure to free heap memory can lead to **memory leaks**.
+
+- **Usage Example:**
+  ```cpp
+  void func() {
+      int* ptr = new int;  // Allocated on the heap
+      *ptr = 42;
+      delete ptr; // Manually freed
+  }
+  ```
+
+- **Advantages:**
+  - Allows allocation of large blocks of memory.
+  - Memory can persist beyond the scope of a function.
+
+- **Disadvantages:**
+  - More prone to errors like memory leaks, double deletion, or dangling pointers.
+  - Slower compared to stack allocation.
+
+---
+
+### **Key Differences Between Stack and Heap Allocation**
+| **Aspect**           | **Stack Memory**                       | **Heap Memory**                 |
+|-----------------------|----------------------------------------|----------------------------------|
+| **Type of Allocation** | Static/Automatic                     | Dynamic                         |
+| **Speed**             | Fast                                  | Slower                          |
+| **Size Limit**        | Limited (small, fixed size)           | Much larger                     |
+| **Lifetime**          | Tied to function/block scope          | Explicitly managed              |
+| **Allocation Control**| Automatic (by compiler)               | Manual (by programmer)          |
+| **Error Risks**       | Low                                   | High (e.g., memory leaks)       |
+| **Typical Use Cases** | Local variables, function calls       | Objects with long lifetimes, dynamic arrays |
 
