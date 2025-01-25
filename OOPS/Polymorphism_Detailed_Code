@@ -1,3 +1,6 @@
+/*Polymorphism in C++ is achieved using virtual functions.
+The main purpose of polymorphism is to allow a program to choose at runtime which method to invoke based on the actual object type*/
+
 #include <iostream>
 #include <string>
 using namespace std;
