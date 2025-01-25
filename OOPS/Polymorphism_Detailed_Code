@@ -157,3 +157,26 @@ int main() {
 
     return 0;
 }
+
+
+//Additional Note 
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Using pass by reference
+void greet(const string& name) {
+    cout << "Hello, " << name << endl;
+}
+
+// Using pass by value (inefficient)
+void greetValue(string name) {
+    cout << "Hello, " << name << endl;
+}
+
+int main() {
+    string name = "Alice";
+    
+    greet(name);      // Efficient: No copy
+    greetValue(name); // Inefficient: Copies 'name' into the function
+}
