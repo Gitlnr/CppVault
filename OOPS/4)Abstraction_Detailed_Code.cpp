@@ -1,6 +1,6 @@
 /*Key Concepts in Abstraction
 Abstract Classes: An abstract class is a class that cannot be instantiated directly. 
-It is typically used as a base class. An abstract class may contain pure virtual functions (functions that are declared but not defined in the abstract class), 
+It is typically used as a base class. An abstract class may contain pure virtual functions (functions that are declared but no definition in the abstract class), 
 and any class derived from an abstract class must implement these functions.
 
 Pure Virtual Functions: A pure virtual function is a function that is declared in the base class but has no definition. 
