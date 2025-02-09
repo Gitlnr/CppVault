@@ -1,30 +1,27 @@
-### Encapsulation in C++
+/* Encapsulation in C++
 
-**Encapsulation** is one of the four fundamental principles of Object-Oriented Programming (OOP).
+Encapsulation is one of the four fundamental principles of Object-Oriented Programming (OOP).
 It refers to a wrapping  data (variables) and methods (functions) in a single unit, called a class.
 Encapsulation also involves restricting direct access to some of the object's components, which is often achieved by making use 
-of **access specifiers** like `private`, `protected`, and `public`.
+of access specifiers like private, protected, and public.
 
 Key benefits of encapsulation:
-1. **Data hiding**: Protects the internal state of an object and prevents unintended interference.
-2. **Code modularity**: Enhances code maintainability and reduces complexity.
-3. **Controlled access**: You can control how the data in an object is accessed or modified using getter and setter methods.
+1. Data hiding: Protects the internal state of an object and prevents unintended interference.
+2. Code modularity: Enhances code maintainability and reduces complexity.
+3. Controlled access: You can control how the data in an object is accessed or modified using getter and setter methods.
 
-
-### Constructors and Destructors
-Note : Usually conplier automatically creates a constructor, it is called when a object is created.
+Constructors and Destructors
+Note : Usually complier automatically creates a constructor, it is called when a object is created.
       -The memory is allocated when the constructor is called ,not when class is created.
-1. **Constructor**:
+1. Constructor:
    - A constructor is a special member function that initializes an object when it is created.
    - It has the same name as the class and no return type.
    - Constructors can be overloaded.
-
-2. **Destructor**:
+2. Destructor:
    - A destructor is a special member function that cleans up when an object goes out of scope or is deleted.
-   - It has the same name as the class, prefixed with a tilde (`~`), and takes no arguments.
+   - It has the same name as the class, prefixed with a tilde (`~`), and takes no arguments.  */ 
 
-### Example of Encapsulation with Constructor and Destructor
-```cpp
+// Example of Encapsulation with Constructor and Destructor
 #include <iostream>
 #include <string>
 using namespace std;
@@ -76,46 +73,43 @@ int main() {
     s1.setAge(21);
     cout << "Updated Name: " << s1.getName() << ", Updated Age: " << s1.getAge() << endl;
 
-    return 0;
+    return 0; //When main() reaches return 0; it signals the end of the function. The destructor is called .
 }
----
-### Types of Constructors
 
-1. **Default Constructor**:
+// Types of Constructors
+/*
+1. Default Constructor:
    - Automatically provided by the compiler if no constructor is explicitly defined.
-   - Example:
-     ```cpp
+
      class Example {
      public:
          Example() {
              cout << "Default constructor called!" << endl;
          }
      };
-     Example obj; // Calls the default constructor
-     ```
+      Example obj; // Calls the default constructor
 
-2. **Parameterized Constructor**:
+2. Parameterized Constructor:
    - Accepts arguments to initialize object data.
    - Example: 
-     ```cpp
      Example(int x) {
          cout << "Parameterized constructor, x = " << x << endl;
      }
 
-3. **Copy Constructor**:
+3. Copy Constructor:
    - Creates a new object as a copy of an existing object.
 
-### Shallow Copy vs Deep Copy
+ Shallow Copy vs Deep Copy
 
-- **Shallow Copy**: Copies the values of data members as they are (including pointers). Both objects share the same memory for the pointer.
-  - **Use Case**: Quick copying when no dynamic memory allocation is involved.
-  - **Problem**: Modifying one affects the other.
+  - Shallow Copy: Copies the values of data members as they are (including pointers). Both objects share the same memory for the pointer.
+  - Use Case: Quick copying when no dynamic memory allocation is involved.
+  - Problem: Modifying one affects the other.
 
-- **Deep Copy**: Copies the values and allocates new memory for dynamic data, ensuring independent objects.
-  - **Use Case**: Used when objects involve dynamically allocated memory.
+  - Deep Copy: Copies the values and allocates new memory for dynamic data, ensuring independent objects.
+  - Use Case: Used when objects involve dynamically allocated memory.
+*/
+// Example: Shallow Copy vs Deep Copy
 
-#### Example: Shallow Copy vs Deep Copy
-```cpp
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -127,7 +121,7 @@ private:
 public:
     // Parameterized Constructor
     CopyExample(const char* initData) {
-        data = new char[strlen(initData) + 1];
+        data = new char[strlen(initData) + 1]; //forgetting to add +1, the null terminator may overwrite some other memory, causing undefined behavior.
         strcpy(data, initData);
     }
 
@@ -139,8 +133,8 @@ public:
     // Deep Copy Constructor
     CopyExample(const CopyExample& other, bool deepCopy) {
         if (deepCopy) {
-            data = new char[strlen(other.data) + 1];
-            strcpy(data, other.data); // Allocates new memory
+            data = new char[strlen(other.data) + 1];// Allocates new memory and +1 for null terminator 
+            strcpy(data, other.data); //copies the value from other.data to data
         }
     }
 
@@ -149,7 +143,7 @@ public:
     }
 
     ~CopyExample() {
-        delete[] data;
+        delete[] data; //new[] is used to allocate arrays dynamically so while dellocation ,delete the array of characters
     }
 };
 
@@ -163,7 +157,7 @@ int main() {
     return 0;
 }
 
-###Additional Note :
+/* Additional Note :
 A C-style string ends with a special null character ('\0'), which marks the end of the string.
 This null character is not part of the visible content but is essential for string functions like strlen or strcmp to work correctly.
 Ex:
@@ -178,11 +172,14 @@ strcpy(data, initData); // Copies "Hello" into data, including the '\0'
 char* dataWithoutNull = new char[length]; // No space for '\0'
 strcpy(dataWithoutNull, initData); // Undefined behavior, as '\0' will overflow
 
----
+Ex:
+char data[] = "Hello";  // Compiler automatically adds '\0'
+char data[6] = {'H', 'e', 'l', 'l', 'o', '\0'};  // Correct way
+char data[5] = {'H', 'e', 'l', 'l', 'o'};  // InCorrect way //causes overflow
+char data[5], valid indices are 0 to 4.
+*/
+// Destructor with Deletion Example
 
-### Destructor with Deletion Example
-
-```cpp
 #include <iostream>
 using namespace std;
 
