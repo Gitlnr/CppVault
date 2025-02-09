@@ -115,7 +115,7 @@ public:
     void AddStudentData(string studentName, int studentID, char studentGrade) {
         //struct , constructor with parameter
         //Student newStduent (studentName ,studentID, toupper(studentGrade));
-        //students.push_back(newStduent);
+        //studentsVector.push_back(newStduent);
         //emplace_back() if you want the cleanest and most efficient way to add a new student 
         studentsVector.emplace_back(studentName, studentID, toupper(studentGrade));
     }
@@ -186,13 +186,13 @@ int main() {
 
     // Shallow copy constructor  
     StudentData* shallowCopiedData = new StudentData(*student ,false); 
-   // cout << "Student Data for shallow copy constructor " << endl;
+    cout << "Student Data for shallow copy constructor " << endl;
     shallowCopiedData->DisplayStudentsData();
     cout << endl;
     
     // Deep copy constructor  
     StudentData* deepCopiedData = new StudentData(*student ,true); 
-   // cout << "Student Data for deep copy constructor " << endl;
+    cout << "Student Data for deep copy constructor (before modification)" << endl;
     deepCopiedData->DisplayStudentsData();
     cout << endl;
     //Modify the deep copy data 
