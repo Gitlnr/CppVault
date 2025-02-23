@@ -1,7 +1,13 @@
 /*What is Bubble Sort? (Concise Explanation for YouTube)
 Bubble Sort is a simple sorting algorithm that repeatedly compares and swaps adjacent elements if they are in the wrong order. This process continues until the entire list is sorted.
 In simple Bubble Sort sorts the elements in increasing order (smallest to largest) by repeatedly swapping adjacent elements if they are in the wrong order.
-✅ Key Idea: Large values "bubble up" to their correct position, like bubbles rising in water.*/
+✅ Key Idea: Large values "bubble up" to their correct position, like bubbles rising in water.
+Time Complexity
+Worst/Average Case: 
+𝑂(𝑛2) (when the list is reversed)
+Best Case: 
+𝑂(𝑛)(if the list is already sorted, using an optimized version)
+Bubble Sort is simple but inefficient for large lists.*/
 
 #include <iostream>
 #include <vector>
