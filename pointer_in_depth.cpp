@@ -22,8 +22,8 @@ int main() {
     cout <<"*p value is "<<*p<<endl; //output : 10
     cout <<"a value is "<<a<<endl;  //output : 10
     cout <<"&a value is "<<&a<<endl; //output : address of variable a
-    cout <<"&p value is "<<&p<<endl; //output : ???
-    cout <<"p value is "<<p<<endl; //output : ???
+    cout <<"p value is "<<p<<endl; //output : holds the address of variable a //`p` stores the address of `a`.
+    cout <<"&p value is "<<&p<<endl; //output : address of pointer p  `&p` gives the memory address of `p` itself, which is stored at a different location in memory.
     cout<<endl;
 
   ///////////////Arithmetic Pointer/////////////////////////////////
