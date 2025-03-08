@@ -175,6 +175,8 @@ void my_free(void* ptr) {
 
 int main() {
     // Example of using the custom memory manager
+    //On a 32-bit system, size_t is typically 32 bits (unsigned int)
+    //On a 64-bit system, size_t is typically 64 bits (unsigned long or unsigned long long)
     size_t size = 100; // Requesting 100 bytes of memory
 
     void* p = my_malloc(size);
