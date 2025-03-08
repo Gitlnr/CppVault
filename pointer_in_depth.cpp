@@ -156,6 +156,7 @@ free(ptr): Frees the memory previously allocated by malloc(). It marks the memor
 
 // Custom malloc using sbrk()
 void* my_malloc(size_t size) {
+//Standard memory allocation functions like malloc(), calloc(), and realloc() use size_t for their size arguments.
     void *ptr = sbrk(size); // Increase the data segment by 'size' bytes
     if (ptr == (void*)-1) {
         // Error handling if sbrk fails
