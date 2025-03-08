@@ -8,6 +8,12 @@ Key Points:
 1)Threads share the same memory space.
 2)Multithreading reduces program execution time for CPU-bound tasks.
 3)Introduced in C++11 using std::thread.
+
+What is a Mutex?
+A mutex (short for "mutual exclusion") is a synchronization primitive used to prevent multiple threads from accessing shared resources simultaneously. 
+It ensures that only one thread can own the mutex at a time, preventing race conditions.
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Example1 : The below code is not amutithreading ,it just performs 2 different tasks. 
 #include <iostream>
@@ -74,6 +80,8 @@ Use std::lock: Prefer std::lock to acquire multiple locks simultaneously.
 Avoid Nested Locks: Minimize locking in nested or dependent functions.
 Try-Lock Mechanism: Use std::unique_lock with try_lock.
 
+How Does Deadlock Happen?
+Deadlock typically occurs when multiple mutexes are used and different threads lock them in a different order.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Example1 : whcih causes deadlock
 #include <iostream>
@@ -81,12 +89,12 @@ Example1 : whcih causes deadlock
 #include <mutex>
 std::mutex mutex1, mutex2;
 void thread1() {
-    std::lock_guard<std::mutex> lock1(mutex1);
+    std::lock_guard<std::mutex> lock1(mutex1); // Thread 1 locks mutex1
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    std::lock_guard<std::mutex> lock2(mutex2); // Deadlock risk
+    std::lock_guard<std::mutex> lock2(mutex2); // Deadlock risk // Thread 1 tries to lock mutex2 (but Thread 2 has it)
 }
 void thread2() {
-    std::lock_guard<std::mutex> lock2(mutex2);
+    std::lock_guard<std::mutex> lock2(mutex2); // Thread 2 locks mutex2
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     std::lock_guard<std::mutex> lock1(mutex1); // Deadlock risk
 }
@@ -97,6 +105,19 @@ int main() {
     t2.join();
     return 0;
 }
+Why Deadlock Happens?
+Thread 1 locks mutex1 first and then waits for mutex2 (which is locked by Thread 2).
+Thread 2 locks mutex2 first and then waits for mutex1 (which is locked by Thread 1).
+Both threads keep waiting for each other forever → Deadlock!
+
+//////////////////////////////////////////////////////////////////////////////////////////
+How to Prevent Deadlocks?
+Always Lock Mutexes in a Fixed Order
+
+Ensure all threads lock mutex1 before mutex2 (or vice versa).
+Use std::lock() for Multiple Mutexes
+
+std::lock() locks multiple mutexes at once without deadlock.
 
 Soution : To overcome deadlock
 #include <iostream>
@@ -133,6 +154,15 @@ void thread2() {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     std::cout << "Thread 2: Released both mutexes" << std::endl;
 }
+/*Use Try-Lock Instead of Blocking
+try_lock() returns immediately if the mutex is locked by another thread.
+if (mutex1.try_lock()) {
+    if (mutex2.try_lock()) {
+        // Do work
+        mutex2.unlock();
+    }
+    mutex1.unlock();
+}*/
 
 int main() {
     // Create two threads
