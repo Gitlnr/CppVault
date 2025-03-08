@@ -67,3 +67,30 @@
 | **Error Risks**       | Low                                   | High (e.g., memory leaks)       |
 | **Typical Use Cases** | Local variables, function calls       | Objects with long lifetimes, dynamic arrays |
 
+
+A dangling pointer occurs when you delete a pointer but still try to use it afterward. This leads to undefined behavior, which can cause crashes or corrupt data.
+#include <iostream>
+int main() {
+    int* ptr = new int(10); // Allocate memory on the heap
+    std::cout << *ptr << std::endl; // ✅ Works fine (prints 10)
+
+    delete ptr;  // ❌ Memory is freed, but ptr still holds the address
+
+    std::cout << *ptr << std::endl; // ❌ Dangling pointer! Undefined behavior!
+
+    return 0;
+}
+Double deletion happens when you delete a pointer twice. 
+#include <iostream>
+int main() {
+    int* ptr = new int(10); // Allocate memory
+
+    delete ptr;  // ✅ First delete (valid)
+    delete ptr;  // ❌ Second delete (undefined behavior!)
+
+    return 0;
+}
+
+
+
+
