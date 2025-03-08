@@ -67,3 +67,31 @@ int main(){
   
   return 0;
 }
+
+
+//Additional:
+#include <iostream>
+using namespace std;
+
+class Smartphone {
+public:
+    string brand;
+    Smartphone(string b) : brand(b) {}
+};
+
+void printSmartphoneInfo(const Smartphone& smartphone) {  
+    cout << "Brand: " << smartphone.brand << endl;
+    // smartphone.brand = "Apple"; ❌ Error! Cannot modify inside function
+}
+
+int main() {
+    Smartphone myPhone("Samsung");  // ✅ Create object (NOT const in main)
+    
+    printSmartphoneInfo(myPhone);  // ✅ Pass as const reference (no modification)
+    
+    myPhone.brand = "Apple";  // ✅ Modify outside function (allowed!)
+    
+    cout << "Updated Brand: " << myPhone.brand << endl;  // ✅ Prints: Apple
+    
+    return 0;
+}
