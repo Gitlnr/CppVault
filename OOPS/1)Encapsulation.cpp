@@ -194,8 +194,13 @@ public:
     }
 
     ~Test() {
-        delete ptr;
-        cout << "Memory deallocated!" << endl;
+        delete ptr; //allocated memory using new (not new[]), so you must use delete (not delete[]
+     /* 
+      Allocation Type	Correct Deallocation
+      ptr = new int(10);	delete ptr;
+      ptr = new int[10];	delete[] ptr;
+      */
+          cout << "Memory deallocated!" << endl;
     }
 };
 
