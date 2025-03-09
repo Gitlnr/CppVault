@@ -183,3 +183,40 @@ int main() {
     greet(name);      // Efficient: No copy
     greetValue(name); // Inefficient: Copies 'name' into the function
 }
+
+What Happens in Pass by Reference?
+When you pass a variable by reference (&), the function does not create a new copy. Instead, it works directly on the original memory.
+
+✅ Example: Pass by Reference (Efficient)
+#include <iostream>
+using namespace std;
+
+void modify(int& x) {  
+    x = x * 2;  // Modifies the original variable directly
+}
+
+int main() {
+    int num = 10;
+    modify(num);  
+    cout << "Modified num: " << num << endl;  // ✅ Prints: 20 (original memory changed)
+    return 0;
+}
+
+❌ What Happens in Pass by Value?
+If you pass a variable by value, a copy is made, and changes do not affect the original variable.
+
+❌ Example: Pass by Value (Inefficient)
+void modify(int x) {  
+    x = x * 2;  // Only modifies the copied value (original remains unchanged)
+}
+
+int main() {
+    int num = 10;
+    modify(num);
+    cout << "num: " << num << endl;  // ❌ Prints: 10 (original is NOT changed)
+}
+🚨 Problem: num remains 10 because modify(int x) worked on a separate copy.
+
+Method	                     Copies Memory?	    Can Modify Original?	Efficient?
+Pass by Value (int x)	      ✅ Yes	             ❌ No	               ❌ No
+Pass by Reference (int& x)	  ❌ No	                 ✅ Yes	               ✅ Yes
