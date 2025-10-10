@@ -107,6 +107,9 @@ int main() {
 
   - Deep Copy: Copies the values and allocates new memory for dynamic data, ensuring independent objects.
   - Use Case: Used when objects involve dynamically allocated memory.
+
+Static / fixed allocation → Memory size is decided before the program runs (e.g., int arr[10];).
+Dynamic allocation → Memory size can be decided while the program is running, based on real-time conditions (e.g., using malloc, new, etc.).
 */
 // Example: Shallow Copy vs Deep Copy
 
