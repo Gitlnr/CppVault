@@ -2,8 +2,6 @@
 * ✅ **Reference (`r`)** → is an **alias**; once bound to a variable, it **cannot be changed** to refer to another one.
 
 Example:
-
-```cpp
 int a = 10, b = 20;
 int* p = &a;  // p points to a
 p = &b;       // ✅ now p points to b
@@ -258,3 +256,9 @@ int main() {
 ✅ Key points:
 * Deep copy is **safer** when using dynamic memory.
 * You usually implement it by writing a **custom copy constructor** (and assignment operator if needed).
+
+💡 Analogy:
+Shallow copy → Two people sharing the same notebook.
+Deep copy → Two people having their own copies of the notebook.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
