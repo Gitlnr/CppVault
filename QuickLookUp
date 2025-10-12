@@ -1,0 +1,145 @@
+### The statement:
+> "Deleting derived via base pointer without virtual destructor causes undefined behavior."
+#### 1. **Context**
+
+Suppose you have a **base class** and a **derived class**:
+```cpp
+class Base {
+public:
+    ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+```
+
+Now, imagine this code:
+
+```cpp
+Base* ptr = new Derived();
+delete ptr; // ⚠️ Problem!
+```
+
+#### 2. **What happens here?**
+
+* `ptr` is a pointer to `Base`, but it actually points to a `Derived` object.
+* When you call `delete ptr`, C++ looks at the **type of the pointer**, not the actual object type (unless the destructor is `virtual`).
+* Here, the destructor of `Base` runs, but the destructor of `Derived` **does not run**.
+* If `Derived` allocates resources (like `new` memory, file handles, etc.), they **won’t be freed**, causing **resource leaks or undefined behavior**.
+
+---
+
+#### 3. **Virtual destructor solves this**
+
+If you declare the base destructor as `virtual`:
+
+```cpp
+class Base {
+public:
+    virtual ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+```
+
+* Now `delete ptr;` **will call Derived's destructor first**, then Base’s destructor.
+* Everything gets cleaned up properly.
+
+#### 4. **Key Takeaways**
+
+1. **Rule of Thumb:** If a class is meant to be a base class, **always give it a virtual destructor**.
+2. **Undefined Behavior:** Deleting a derived object through a non-virtual base pointer can crash your program, leak memory, or behave unpredictably.
+3. **When safe:** If you never delete derived objects via a base pointer, a non-virtual destructor is fine.
+
+✅ Example with `virtual`:
+```cpp
+class Base {
+public:
+    virtual ~Base() { std::cout << "Base destroyed\n"; }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() { std::cout << "Derived destroyed\n"; }
+};
+
+int main() {
+    Base* obj = new Derived();
+    delete obj; // Calls Derived destructor then Base destructor safely
+}
+
+Output:
+Derived destroyed
+Base destroyed
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+### **1. Overloading (Compile-time / Static Polymorphism)**
+
+**Definition:**
+Overloading happens when you have **functions with the same name** but **different parameter lists** (different number or types of arguments) **in the same scope**. The compiler decides which function to call based on the arguments you pass.
+
+**Example:**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Math {
+public:
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; } // Overloaded function
+};
+
+int main() {
+    Math m;
+    cout << m.add(2, 3) << endl;      // Calls int version
+    cout << m.add(2.5, 3.5) << endl;  // Calls double version
+}
+```
+
+✅ Key points:
+
+* Same function name.
+* Different parameter types or numbers.
+* Decided **at compile-time**.
+
+---
+
+### **2. Overriding (Runtime / Dynamic Polymorphism)**
+
+**Definition:**
+Overriding happens when a **derived class provides a new implementation** of a **virtual function** defined in its base class. 
+The compiler uses the **actual object type at runtime** to decide which function to call.
+
+**Example:**
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual void show() { cout << "Base show" << endl; }
+};
+
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived show" << endl; } // Overrides Base
+};
+
+int main() {
+    Base* b = new Derived();
+    b->show();  // Calls Derived's show because of virtual function
+}
+```
+✅ Key points:
+
+* Must have the same function signature.
+* Base function must be `virtual`.
+* Decided **at runtime** (dynamic dispatch).
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
