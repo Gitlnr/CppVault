@@ -1,7 +1,51 @@
+* ✅ **Pointer (`p`)** → can be **reassigned** to point to another variable (its stored address can change).
+* ✅ **Reference (`r`)** → is an **alias**; once bound to a variable, it **cannot be changed** to refer to another one.
+
+Example:
+
+```cpp
+int a = 10, b = 20;
+int* p = &a;  // p points to a
+p = &b;       // ✅ now p points to b
+
+int& r = a;   // r refers to a
+// r = b; ❌ assigns value of b to a, doesn’t rebind r
+```
+So “p can change” means **the address stored in p can change** —
+but a **reference always remains bound** to the same variable.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+***Stack memory** → used for **local variables** inside functions.
+  * The system **automatically allocates and frees** it when the function starts and ends.
+  * It’s **fast**, but **limited in size**.
+  * Example:
+
+    ```cpp
+    void func() {
+        int x = 10;  // stored on stack
+    } // x is automatically destroyed here
+    ```
+
+* **Heap memory** → used for **dynamic allocation** (via `new` or `malloc`).
+  * You must **manually release** it using `delete` or `free`.
+  * It’s **slower**, but you can allocate **large or variable-sized data**.
+  * Example:
+
+    ```cpp
+    int* p = new int(10); // allocated on heap
+    delete p;             // must free manually
+    ```
+
+👉 In short:
+**Stack = fast, automatic, limited.**
+**Heap = flexible, manual, slower.**
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ### The statement:
 > "Deleting derived via base pointer without virtual destructor causes undefined behavior."
 #### 1. **Context**
-
 Suppose you have a **base class** and a **derived class**:
 ```cpp
 class Base {
@@ -33,8 +77,6 @@ delete ptr; // ⚠️ Problem!
 * Here, the destructor of `Base` runs, but the destructor of `Derived` **does not run**.
 * If `Derived` allocates resources (like `new` memory, file handles, etc.), they **won’t be freed**, causing **resource leaks or undefined behavior**.
 
----
-
 #### 3. **Virtual destructor solves this**
 
 If you declare the base destructor as `virtual`:
@@ -46,7 +88,6 @@ public:
         std::cout << "Base destructor\n";
     }
 };
-```
 
 * Now `delete ptr;` **will call Derived's destructor first**, then Base’s destructor.
 * Everything gets cleaned up properly.
@@ -78,13 +119,13 @@ Output:
 Derived destroyed
 Base destroyed
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-### **1. Overloading (Compile-time / Static Polymorphism)**
 
+### **1. Overloading (Compile-time / Static Polymorphism)**
 **Definition:**
-Overloading happens when you have **functions with the same name** but **different parameter lists** (different number or types of arguments) **in the same scope**. The compiler decides which function to call based on the arguments you pass.
+Overloading happens when you have **functions with the same name** but **different parameter lists** (different number or types of arguments) **in the same scope**. 
+The compiler decides which function to call based on the arguments you pass.
 
 **Example:**
-
 ```cpp
 #include <iostream>
 using namespace std;
@@ -100,18 +141,13 @@ int main() {
     cout << m.add(2, 3) << endl;      // Calls int version
     cout << m.add(2.5, 3.5) << endl;  // Calls double version
 }
-```
 
 ✅ Key points:
-
 * Same function name.
 * Different parameter types or numbers.
 * Decided **at compile-time**.
 
----
-
 ### **2. Overriding (Runtime / Dynamic Polymorphism)**
-
 **Definition:**
 Overriding happens when a **derived class provides a new implementation** of a **virtual function** defined in its base class. 
 The compiler uses the **actual object type at runtime** to decide which function to call.
@@ -135,11 +171,90 @@ int main() {
     Base* b = new Derived();
     b->show();  // Calls Derived's show because of virtual function
 }
-```
-✅ Key points:
 
+✅ Key points:
 * Must have the same function signature.
 * Base function must be `virtual`.
 * Decided **at runtime** (dynamic dispatch).
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+### **1. Shallow Copy**
+**Definition:**
+A **shallow copy** copies **only the values of the member variables**.
+
+* If a member is a **pointer**, it copies the pointer itself, **not the data it points to**.
+* This means **both objects point to the same memory**.
+
+**Problem:**
+* If one object deletes/frees the memory, the other object’s pointer becomes **dangling**.
+* Leads to **shared memory issues**, crashes, or undefined behavior.
+
+**Example:**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Shallow {
+public:
+    int* data;
+    Shallow(int value) {
+        data = new int(value);
+    }
+    ~Shallow() {
+        delete data;
+    }
+};
+
+int main() {
+    Shallow obj1(10);
+    Shallow obj2 = obj1;  // Shallow copy (default copy constructor)
+    
+    cout << *obj1.data << " " << *obj2.data << endl; // Both point to same memory
+
+    obj2.data = new int(20); // Modifying obj2
+    cout << *obj1.data << endl; // Could be unexpected if obj2 deleted memory
+}
+```
+
+* Default copy constructor **does a shallow copy**.
+* Both `obj1` and `obj2` share the same memory initially.
+
+### **2. Deep Copy**
+**Definition:**
+A **deep copy** copies **the actual data** the pointer is pointing to, not just the pointer.
+* Each object has its **own separate copy of the data**.
+* Changes in one object **don’t affect** the other.
+
+**Example:**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Deep {
+public:
+    int* data;
+    Deep(int value) {
+        data = new int(value);
+    }
+    // Custom copy constructor for deep copy
+    Deep(const Deep& other) {
+        data = new int(*other.data); // Allocate new memory and copy value
+    }
+    ~Deep() {
+        delete data;
+    }
+};
+
+int main() {
+    Deep obj1(10);
+    Deep obj2 = obj1;  // Deep copy
+
+    *obj2.data = 20;   // Modifying obj2 does NOT affect obj1
+    cout << *obj1.data << " " << *obj2.data << endl; // 10 20
+}
+
+✅ Key points:
+* Deep copy is **safer** when using dynamic memory.
+* You usually implement it by writing a **custom copy constructor** (and assignment operator if needed).
