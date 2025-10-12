@@ -553,3 +553,60 @@ delete[] arr;       // calls destructor 5 times
 With `malloc/free`, none of that happens — you just get bytes.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🧩 **Struct vs Class in C++**
+In C++, `struct` and `class` are **almost identical** — the **only real difference** is their **default access levels**.
+### **1. Default Access Levels**
+
+| Member Type  | In `struct`                       | In `class`                         |
+| ------------ | --------------------------------- | ---------------------------------- |
+| Data members | **public** by default             | **private** by default             |
+| Base classes | **public** inheritance by default | **private** inheritance by default |
+
+```cpp
+struct S {
+    int x;          // public by default
+};
+
+class C {
+    int x;          // private by default
+};
+
+So:
+```cpp
+S s;
+s.x = 5;   // ✅ OK (public)
+
+C c;
+c.x = 5;   // ❌ Error (private)
+
+### **2. Otherwise, They’re the Same**
+Both can have:
+* Constructors, destructors
+* Member functions
+* Inheritance
+* Virtual functions
+* Operator overloading
+* Access specifiers (`public`, `private`, `protected`)
+
+Example:
+```cpp
+struct Point {
+    int x, y;
+    void show() { cout << x << ", " << y << endl; }
+};
+is functionally the same as:
+
+```cpp
+class Point {
+public:
+    int x, y;
+    void show() { cout << x << ", " << y << endl; }
+};
+
+✅ **In short:**
+> In C++, `struct` and `class` are the same except:
+> * `struct` members are **public by default**
+> * `class` members are **private by default**
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
