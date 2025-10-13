@@ -933,21 +933,16 @@ int main() {
     t.join();       // wait for thread to finish
     cout << "Main thread done!" << endl;
 }
-```
 
 **Output:**
-
-```
 Hello from thread!
 Main thread done!
-```
 
 ✅ `thread t(work);` → starts a **new thread** running the function `work`.
 ✅ `t.join();` → main thread waits for this thread to finish.
 
 
 ### **2. Key Points**
-
 | Keyword      | Meaning                                       |
 | ------------ | --------------------------------------------- |
 | `thread`     | Class representing a thread of execution      |
@@ -955,7 +950,6 @@ Main thread done!
 | `t.detach()` | Let thread run independently (no join needed) |
 
 ### **3. Passing Arguments**
-
 ```cpp
 void printNumber(int x) {
     cout << "Number: " << x << endl;
@@ -965,8 +959,6 @@ int main() {
     thread t(printNumber, 42); // pass argument to thread function
     t.join();
 }
-```
-
 Output:
 Number: 42
 
@@ -980,27 +972,13 @@ Number: 42
 > `thread t(work);` → runs `work()` **concurrently**.
 > `t.join();` → waits for the thread to finish before continuing.
 
-Ah! Perfect — now I understand exactly what you’re aiming for 😎.
-
-Yes, for a **3+ years experienced C++ interview**, just knowing `thread t(work); t.join();` is **far from enough**. Interviewers usually 
-expect you to demonstrate **real understanding** of **multithreading in C++11**, **string/thread safety**, and **practical problems**.
-
-Let me break down what you **really need to know and be able to discuss**.
-
----
-
 ## **1. Thread Basics (you already know)**
-
 * `std::thread` — create a thread.
 * `t.join()` vs `t.detach()`.
 * Passing arguments to threads (`thread t(func, arg1, arg2);`).
 
----
-
 ## **2. Shared Data & Synchronization**
-
 ### **Problem**
-
 Multiple threads modifying the same variable can cause **data races**, which is undefined behavior.
 
 ```cpp
@@ -1051,15 +1029,11 @@ int main() {
     t2.join();
     cout << counter << endl; // ✅ always 2000
 }
-```
 
 * `mutex` = mutual exclusion, prevents simultaneous access.
 * `lock_guard` = RAII style lock (preferred).
 
----
-
 ## **3. Atomic Variables**
-
 For simple counters, `std::atomic` can be faster than a mutex:
 
 ```cpp
@@ -1080,12 +1054,8 @@ int main() {
     t2.join();
     std::cout << counter << std::endl; // ✅ always 2000
 }
-```
-
----
 
 ## **4. Condition Variables**
-
 Used for **thread coordination** (producer-consumer style).
 
 ```cpp
@@ -1111,7 +1081,10 @@ void producer() {
 void consumer() {
     for(int i=1;i<=5;i++){
         unique_lock<mutex> lock(mtx);
-        cv.wait(lock, []{ return !q.empty(); }); // wait until q not empty
+       // cv.wait(lock, []{ return !q.empty(); }); // wait until q not empty //lambda
+       while (q.empty()){
+          cv.wait(lock);
+       }
         cout << "Consumed: " << q.front() << endl;
         q.pop();
     }
@@ -1122,9 +1095,6 @@ int main() {
     t1.join();
     t2.join();
 }
-```
-
----
 
 ## **5. Strings and Thread Safety**
 
@@ -1154,5 +1124,6 @@ int main() {
     std::cout << data << std::endl;
 }
 
-
+Use lock_guard when you just need to protect a critical section.
+Use unique_lock when you need more control (e.g. with condition_variable).
 
