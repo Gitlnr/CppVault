@@ -1,0 +1,45 @@
+## **1. Shared Memory vs TCP/IP**
+
+### **Shared Memory**
+
+* **Used when both applications run on the same PC.**
+* Very fast because both programs **access the same memory area** directly.
+* No network stack involved → **no TCP/IP needed**.
+* Mutexes or semaphores are used to **synchronize access** and prevent data corruption.
+* Example in your project:
+
+  * **Log application** and main inspection application both run locally.
+  * Shared memory is used to **send inspection results or status quickly** to the log app.
+
+✅ **Key point:** No sockets, no TCP/IP — it’s **pure local memory sharing**.
+
+---
+
+### **2. TCP/IP with Sockets**
+
+* **Used when communication goes over a network** or with devices that have their own controllers (like PLCs, cameras, printers).
+* Even if the PLC is on the same machine physically, it usually has its **own IP address** and **Ethernet interface**, so TCP/IP sockets are used.
+* Example in your project:
+
+  * PLC receives commands (start/stop inspection, read sensors) from your main app via **TCP/IP socket**.
+  * Camera might also use TCP/IP if it’s a networked device.
+
+✅ **Key point:** Sockets + TCP/IP are for **networked or separate-process communication** (could be same PC or different machine).
+
+---
+
+### **3. Summary Table**
+
+| Communication | Runs on same PC? | TCP/IP needed? | Socket used? | Example in project             |
+| ------------- | ---------------- | -------------- | ------------ | ------------------------------ |
+| Shared Memory | Yes              | No             | No           | Log application                |
+| TCP/IP Socket | Yes/No           | Yes            | Yes          | PLC, networked camera, printer |
+
+> “For our local log application, we use **shared memory** because both programs run on the same PC — it’s very fast and doesn’t require TCP/IP or sockets.
+> For hardware like the PLC, we use **TCP/IP sockets** because the PLC acts as a separate device with its own IP, allowing reliable network communication.”
+
+---
+
+If you want, I can **add this distinction and your project examples to the PDF/cheat sheet** we prepared earlier, so it’s complete for your interview.
+
+Do you want me to do that?
