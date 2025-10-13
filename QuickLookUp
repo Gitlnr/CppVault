@@ -609,4 +609,56 @@ public:
 > * `struct` members are **public by default**
 > * `class` members are **private by default**
 
+Even though a `struct` defaults to `public`, you can still explicitly use `private:` (or `protected:`) sections — just like in a `class`.
+### **Example:**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct Person {
+private:
+    string name;  // private member
+
+public:
+    int age;      // public member
+
+    void setName(string n) { name = n; }
+    void show() { cout << name << " (" << age << ")\n"; }
+};
+
+int main() {
+    Person p;
+    p.age = 25;           // ✅ allowed (public)
+    // p.name = "John";   // ❌ not allowed (private)
+    p.setName("John");    // ✅ allowed (access through public function)
+    p.show();
+}
+
+**Output:**
+John (25)
+
+### 🧠 Key Idea
+
+Even though:
+
+```cpp
+struct Person { ... };
+```
+
+defaults to **public**,
+you can still **control access** inside it using:
+
+```cpp
+private:
+protected:
+public:
+
+Just like in a class!
+
+### **In short:**
+
+> ✅ You can use `private:` and `protected:` inside a `struct`.
+> The only difference from `class` is the **default** — not the **capabilities**.
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
