@@ -662,3 +662,167 @@ Just like in a class!
 > The only difference from `class` is the **default** — not the **capabilities**.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🧩 **Exception Handling in C++**
+### **1. The Basic Idea**
+
+Exception handling lets you **detect errors (exceptions)** and **respond** to them **without crashing the program**.
+It uses **three keywords**:
+* `try` → Code that might throw an error
+* `throw` → Signal (raise) the error
+* `catch` → Handle (catch) the error
+
+### **2. Example Explained**
+```cpp
+#include <iostream>
+#include <stdexcept>  // for runtime_error
+using namespace std;
+
+int main() {
+    try {
+        throw runtime_error("Err");  // 🔥 throw an exception
+    } 
+    catch (exception& e) {           // 🧯 catch it
+        cout << e.what();            // print what() message
+    }
+}
+
+**Output:**
+Err
+### **3. Step-by-Step Breakdown**
+
+| Step                          | What happens                                                                                         |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `try { ... }`                 | You wrap code that might fail.                                                                       |
+| `throw runtime_error("Err");` | You *throw* an exception object. This immediately stops normal flow and jumps to a matching `catch`. |
+| `catch (exception& e)`        | The program finds this handler (since `runtime_error` is a kind of `exception`).                     |
+| `e.what()`                    | Returns the error message (`"Err"`).                                                                 |
+
+### **4. Common Exception Types (in `<stdexcept>`)**
+
+| Exception type          | Meaning                               |
+| ----------------------- | ------------------------------------- |
+| `std::runtime_error`    | Error at runtime (like invalid state) |
+| `std::logic_error`      | Error in program logic                |
+| `std::out_of_range`     | Index out of range                    |
+| `std::invalid_argument` | Bad function argument                 |
+| `std::bad_alloc`        | Memory allocation failed              |
+
+### **5. Multiple Catch Blocks**
+You can handle different types differently:
+```cpp
+try {
+    throw out_of_range("Index too big");
+}
+catch (out_of_range& e) {
+    cout << "Range error: " << e.what();
+}
+catch (exception& e) {
+    cout << "General error: " << e.what();
+}
+
+### **6. `catch(...)` for Anything**
+You can also catch **any** type of exception:
+```cpp
+try {
+    throw 123;  // could be anything
+}
+catch (...) {
+    cout << "Caught something!\n";
+}
+
+### **7. Key Takeaways**
+| Keyword    | Meaning                          |
+| ---------- | -------------------------------- |
+| `try`      | Wrap risky code                  |
+| `throw`    | Raise an exception               |
+| `catch`    | Handle an exception              |
+| `e.what()` | Returns message inside exception |
+
+💡 **In short:**
+> `try` runs code that may fail →
+> `throw` raises an error →
+> `catch` handles it safely.
+
+Perfect 👍 — let’s look at a **realistic example** of C++ exception handling with **`std::string`** or **string-related operations**.
+## 🧩 **Example 1: String Index Out of Range**
+```cpp
+#include <iostream>
+#include <string>
+#include <stdexcept>  // for out_of_range
+using namespace std;
+
+int main() {
+    string str = "hello";
+
+    try {
+        cout << "Character: " << str.at(10) << endl;  // out of range //`str.at(10)` means **“give me the character at index 10 of the string `str`.”*
+                    //Since `str = "hello"` has only 5 characters (`indexes 0–4`), index `10` is **out of range**, so it **throws an exception** (`std::out_of_range`)
+    } 
+    catch (out_of_range& e) {
+        cout << "Caught exception: " << e.what() << endl;
+    }
+
+    cout << "Program continues normally.\n";
+}
+
+### **Output:**
+Caught exception: basic_string::at: __n (which is 10) >= this->size() (which is 5)
+Program continues normally.
+
+## 🧩 **Example 2: Converting String to Integer**
+Sometimes invalid input can cause an exception.
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string input = "abc"; // not a valid number
+    try {
+        int num = stoi(input); // will throw invalid_argument
+        cout << "Number: " << num << endl;
+    } 
+    catch (invalid_argument& e) {
+        cout << "Invalid input: " << e.what() << endl;
+    } 
+    catch (out_of_range& e) {
+        cout << "Number too large: " << e.what() << endl;
+    }
+
+    cout << "Program still running fine!\n";
+}
+
+### **Output:**
+Invalid input: stoi
+Program still running fine!
+
+## 🧩 **Example 3: Throwing Your Own Exception**
+You can also create your own checks and throw manually:
+```cpp
+#include <iostream>
+#include <stdexcept>
+#include <string>
+using namespace std;
+
+double divide(int a, int b) {
+    if (b == 0)
+        throw runtime_error("Division by zero!"); // manually throw
+    return static_cast<double>(a) / b;
+}
+
+int main() {
+    try {
+        cout << divide(10, 0) << endl;
+    } 
+    catch (runtime_error& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+
+### **Output:**
+Error: Division by zero!
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
