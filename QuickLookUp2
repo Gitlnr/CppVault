@@ -1,0 +1,467 @@
+## **C++ Interview Questions & Answers (15–20 Questions)**
+
+### **1. Virtual Functions & vtable**
+
+**Q:** What happens in memory when a class has virtual functions?
+**A:** A vtable is created per class; each object has a vptr pointing to it. Calling a virtual function through a base pointer uses the vptr to dynamically dispatch to the derived function.
+
+---
+
+### **2. Smart Pointers**
+
+**Q:** Difference between `unique_ptr` and `shared_ptr`?
+**A:** `unique_ptr` owns a single object, cannot be copied, ownership is transferred with `std::move`. `shared_ptr` allows shared ownership; object destroyed when last `shared_ptr` goes out of scope.
+
+---
+
+### **3. Object Slicing**
+
+**Q:** What is object slicing? How to avoid it?
+**A:** Occurs when a derived object is copied to a base object by value; derived part is lost. Use **pointers or references** to Base to preserve polymorphism.
+
+---
+
+### **4. Move Semantics**
+
+**Q:** What is a move constructor and move assignment?
+**A:** Transfer ownership of resources from a temporary object (rvalue) without copying. Useful to reduce memory/copy overhead for large objects.
+
+---
+
+### **5. Stack vs Heap**
+
+**Q:** Difference between stack and heap?
+**A:** Stack: automatic storage, fast allocation, limited size. Heap: dynamic storage, slower, manually managed, larger capacity.
+
+---
+
+### **6. Const vs Constexpr vs Const Volatile**
+
+**Q:** Explain `const`, `constexpr`, `const volatile`.
+**A:**
+
+* `const`: value cannot be changed.
+* `constexpr`: value known at compile-time.
+* `const volatile`: read-only but may change externally (rare in non-embedded).
+
+---
+
+### **7. Templates**
+
+**Q:** Difference between `template<class T>` and `template<typename T>`?
+**A:** No difference; both define a type parameter for a template.
+
+**Q:** Why use templates?
+**A:** To write **generic, reusable code** for multiple types.
+
+---
+
+### **8. STL – `map` vs `unordered_map`**
+
+**Q:** Difference & use case?
+**A:** `map` – ordered, implemented as balanced tree, O(log N). `unordered_map` – hash table, O(1) average, faster lookups, order not guaranteed.
+
+---
+
+### **9. RAII (Resource Acquisition Is Initialization)**
+
+**Q:** What is RAII?
+**A:** Encapsulate resource in object; resource acquired in constructor, released in destructor. Prevents leaks.
+
+---
+
+### **10. Threading Basics**
+
+**Q:** Difference between `thread`, `mutex`, and `lock_guard`?
+**A:** `thread` runs a function concurrently; `mutex` protects shared data; `lock_guard` manages mutex locking automatically to prevent deadlocks.
+
+---
+
+### **11. Deadlock Prevention**
+
+**Q:** How to prevent deadlock when multiple threads access multiple mutexes?
+**A:** Use consistent lock order or `std::lock()` with `adopt_lock`.
+
+---
+
+### **12. Race Condition**
+
+**Q:** What is a race condition?
+**A:** Multiple threads access shared data without proper synchronization, causing unpredictable results.
+
+---
+
+### **13. Operator Overloading**
+
+**Q:** Can you overload `=` operator?
+**A:** Yes, overload copy and move assignment operators. Avoid overloading operators like `.` or `.*`.
+
+---
+
+### **14. Copy Constructor vs Assignment Operator**
+
+**Q:** Difference?
+**A:** Copy constructor initializes a new object from an existing one. Assignment operator copies into an already existing object.
+
+---
+
+### **15. Static vs Non-Static Members**
+
+**Q:** Difference?
+**A:** Static member belongs to class, shared by all objects. Non-static is per object.
+
+---
+
+### **16. Inline Functions**
+
+**Q:** When to use inline?
+**A:** Suggests compiler to expand code in-place, reducing function call overhead (good for small, frequently called functions).
+
+---
+
+### **17. Const-Correctness**
+
+**Q:** Why mark member functions as `const`?
+**A:** Ensures they don’t modify the object, allows calling on `const` instances.
+
+---
+
+### **18. Exception Safety**
+
+**Q:** What is RAII’s role in exception safety?
+**A:** Objects automatically release resources in destructor when exceptions occur, preventing leaks.
+
+---
+
+### **19. Bitwise Operators**
+
+**Q:** How to set, clear, toggle, and check a bit?
+**A:**
+
+```cpp
+reg |= (1 << n);   // set
+reg &= ~(1 << n);  // clear
+reg ^= (1 << n);   // toggle
+bool b = reg & (1 << n); // check
+```
+
+### **20. Lambda Functions**
+**Q:** What is a lambda function?
+**A:** Anonymous function object, can capture local variables by value or reference, useful for callbacks or STL algorithms.
+
+
+## **C++ Coding Questions – With Answers**
+### **1. Thread-Safe Counter**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+mutex mtx;
+int counter = 0;
+
+void increment() {
+    for(int i=0; i<1000; i++) {
+        lock_guard<mutex> lock(mtx);
+        counter++;
+    }
+}
+
+int main() {
+    thread t1(increment), t2(increment);
+    t1.join(); t2.join();
+    cout << counter << endl;  // Output: 2000
+}
+```
+
+✅ Tests: `std::thread`, `mutex`, race condition prevention.
+
+---
+
+### **2. Object Slicing / Virtual Function**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base { 
+public: 
+    virtual void show() { cout << "Base\n"; } 
+};
+
+class Derived : public Base { 
+public: 
+    void show() override { cout << "Derived\n"; } 
+};
+
+int main() {
+    Derived d;
+    Base* b = &d;
+    b->show();  // Output: Derived
+}
+```
+
+✅ Tests: Polymorphism, vtable, pointers vs objects.
+
+---
+
+### **3. Unique_ptr Transfer**
+
+```cpp
+#include <memory>
+#include <iostream>
+using namespace std;
+
+int main() {
+    unique_ptr<int> p1 = make_unique<int>(10);
+    unique_ptr<int> p2 = move(p1);  // Transfer ownership
+    cout << *p2 << endl;           // Output: 10
+}
+```
+
+✅ Tests: Smart pointers, move semantics.
+
+---
+
+### **4. Bitwise Operations**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    uint8_t reg = 0b01010101;
+    reg |= (1 << 3);    // Set bit 3
+    reg &= ~(1 << 6);   // Clear bit 6
+    reg ^= (1 << 0);    // Toggle bit 0
+    cout << ((reg & (1<<5)) ? "bit5=1\n" : "bit5=0\n");
+}
+```
+
+✅ Tests: Bit manipulation skills.
+
+---
+
+### **5. Simple Thread-Safe Logger**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+mutex logMutex;
+
+void logMessage(const string& msg) {
+    lock_guard<mutex> lock(logMutex);
+    cout << msg << endl;
+}
+
+void worker(int id) {
+    for(int i=0;i<3;i++)
+        logMessage("Thread " + to_string(id) + " msg " + to_string(i));
+}
+
+int main() {
+    thread t1(worker, 1), t2(worker, 2);
+    t1.join(); t2.join();
+}
+```
+
+✅ Tests: Thread safety, lock_guard usage.
+
+---
+
+### **6. Template Function – Max Value**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+template<typename T>
+T maxVal(T a, T b) {
+    return (a > b) ? a : b;
+}
+
+int main() {
+    cout << maxVal(5,10) << endl;     // 10
+    cout << maxVal(3.5,2.1) << endl;  // 3.5
+}
+```
+
+✅ Tests: Templates, generic programming.
+
+---
+
+### **7. Move Constructor**
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Buffer {
+public:
+    vector<int> data;
+    Buffer(vector<int>&& d) : data(move(d)) { cout << "Moved\n"; }
+};
+
+int main() {
+    vector<int> v = {1,2,3};
+    Buffer b(move(v));  // Move constructor called
+}
+```
+
+✅ Tests: Move semantics, rvalue references.
+
+---
+
+### **8. Copy Constructor vs Assignment**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Sample {
+public:
+    int x;
+    Sample(int val) : x(val) {}
+    Sample(const Sample& s) { x = s.x; cout << "Copy\n"; }
+};
+
+int main() {
+    Sample s1(10);
+    Sample s2 = s1; // Copy constructor
+    Sample s3(5);
+    s3 = s1;         // Assignment operator
+}
+```
+
+✅ Tests: Copy constructor, assignment operator.
+
+---
+
+### **9. Lambda with STL Algorithm**
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<int> v = {1,2,3,4,5};
+    int count = count_if(v.begin(), v.end(), [](int x){ return x%2==0; });
+    cout << count << endl;  // Output: 2
+}
+```
+
+✅ Tests: Lambdas, STL algorithms.
+
+---
+
+### **10. Simple Logger Class**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Logger {
+public:
+    void log(const string& msg) { cout << msg << endl; }
+};
+
+int main() {
+    Logger l;
+    l.log("Harman C++ Interview");
+}
+```
+
+✅ Tests: Basic OOP, class design, method calls.
+## **1️⃣ Optimized Move Zeroes (O(N), O(1) space, minimal swaps)**
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void moveZeroes(vector<int>& nums) {
+    int n = nums.size();
+    int lastNonZero = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != 0) {
+            swap(nums[lastNonZero], nums[i]);
+            lastNonZero++;
+        }
+    }
+}
+
+int main() {
+    vector<int> arr = {0, 1, 0, 3, 12};
+    moveZeroes(arr);
+    for (int x : arr) cout << x << " "; // Output: 1 3 12 0 0
+}
+
+ ::::::::::::::::::::::::::::::or::::::::::::::::::::::::::::::::::::::::::::
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void moveZeroesOptimized(vector<int>& nums) {
+    int lastNonZero = 0;
+    for (int i = 0; i < nums.size(); i++) {
+        if (nums[i] != 0) {
+            if (i != lastNonZero) {
+                nums[lastNonZero] = nums[i]; // Move non-zero forward
+                nums[i] = 0;                 // Set current to zero
+            }
+            lastNonZero++;
+        }
+    }
+}
+
+int main() {
+    vector<int> arr = {0, 1, 0, 3, 12};
+    moveZeroesOptimized(arr);
+    for (int x : arr) cout << x << " "; // Output: 1 3 12 0 0
+}
+```
+
+**✅ Optimization Points:**
+
+* Avoids unnecessary swaps if element is already in correct position.
+* Still O(N) time and O(1) space.
+
+---
+
+## **2️⃣ Optimized Fibonacci (Iterative, O(N) time, O(1) space)**
+
+#include <iostream>
+using namespace std;
+
+int fibonacciIterative(int n) {
+    if (n <= 0) return 0;
+    if (n == 1) return 1;
+    
+    int a = 0, b = 1, c;
+    for (int i = 2; i <= n; i++) {
+        c = a + b;
+        a = b;
+        b = c;
+    }
+    return b;
+}
+
+int main() {
+    int n = 10;
+    cout << "Fibonacci(" << n << ") = " << fibonacciIterative(n) << endl; // Output: 55
+}
+
+**✅ Optimization Points:**
+* Iterative → avoids recursion stack overhead.
+* O(N) time, O(1) space.
+* Safe for larger `n` compared to recursive solution.
+
