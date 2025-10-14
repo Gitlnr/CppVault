@@ -251,4 +251,8 @@ const volatile uint8_t* sensorData = (const volatile uint8_t*)0x5000;
 uint8_t value = *sensorData; // allowed
 *sensorData = 10;            // compiler error
 
+“A move constructor and move assignment operator transfer ownership of resources from a temporary object (rvalue) to another object without copying,
+which avoids expensive deep copies. They are important in embedded/automotive systems to reduce CPU and memory overhead for large buffers or data structures.”
+
+
 
