@@ -255,4 +255,55 @@ uint8_t value = *sensorData; // allowed
 which avoids expensive deep copies. They are important in embedded/automotive systems to reduce CPU and memory overhead for large buffers or data structures.”
 
 
+9)Thread-Safe Logging**
+> Imagine you are writing a **logging system** for an embedded/automotive application where multiple threads can log messages simultaneously.
+> 1. How would you **design it** to be thread-safe?
+> 2. Can you write a **simple C++ code snippet** using `std::mutex` or `std::lock_guard`?
+> 3. Optional: How would you **avoid blocking threads too long** while logging?
+
+Answer:
+## **1️⃣ Design Concept**
+
+* Multiple threads may try to log at the same time → risk of **race conditions**.
+* Use a **mutex** to ensure **only one thread writes to the log at a time**.
+* To **avoid blocking threads too long**, you can:
+
+  1. Use a **queue to store log messages**, and a **single logging thread** writes them.
+  2. Use **`std::lock_guard`** for short, atomic access.
+
+## **2️⃣ Simple C++ Example (mutex)**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <vector>
+using namespace std;
+
+mutex logMutex;
+
+void logMessage(const string& msg) {
+    lock_guard<mutex> lock(logMutex);  // thread-safe access
+    cout << msg << endl;
+}
+
+void worker(int id) {
+    for (int i = 0; i < 5; i++) {
+        logMessage("Thread " + to_string(id) + " logging " + to_string(i));
+    }
+}
+
+int main() {
+    thread t1(worker, 1);
+    thread t2(worker, 2);
+
+    t1.join();
+    t2.join();
+    return 0;
+}
+
+**✅ Key Points**
+* `lock_guard` ensures only one thread writes at a time → no race condition.
+* Logging is **safe and simple** for embedded systems.
+* For high-performance, you could add a **message queue + background logging thread** to minimize blocking.
 
