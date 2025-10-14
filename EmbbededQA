@@ -307,3 +307,12 @@ int main() {
 * Logging is **safe and simple** for embedded systems.
 * For high-performance, you could add a **message queue + background logging thread** to minimize blocking.
 
+10) Real-Time vs Non-Real-Time Systems**
+> 1. What is the difference between **hard real-time**, **soft real-time**, and **non-real-time systems**?
+> 2. Give an example of each in **automotive/embedded context**.
+> 3. Why is this distinction important for C++ development in embedded systems like Harman works on?
+
+Answer:
+“Hard real-time systems must meet deadlines strictly (e.g., airbag), soft real-time systems tolerate occasional delays (e.g., dashboard display), 
+and non-real-time systems have no timing constraints (e.g., logging). 
+This distinction guides C++ design choices like avoiding dynamic memory and ensuring deterministic execution in embedded automotive applications.”
