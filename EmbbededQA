@@ -15,3 +15,240 @@ Behavior with Base Pointer:
 When calling a function like:
 Base* ptr = new Derived(); ptr->virtualFunc();
 The vptr inside the object points to Derived's vtable, so Derived's function is executed, not Base’s.
+
+2) – Smart Pointers & Ownership**
+Explain the difference between **`unique_ptr`** and **`shared_ptr`** in C++.
+* When would you use each in an **embedded/automotive context**?* What happens if you **copy a `unique_ptr`**?
+Answer:
+"`unique_ptr` owns a single resource and **cannot be copied**; ownership can only be **transferred using `std::move`**. 
+`shared_ptr` allows **shared ownership** of a resource, and the object is destroyed only when the last `shared_ptr` pointing to it is destroyed. 
+In an embedded/automotive context, `unique_ptr` is preferred for **strict ownership and deterministic destruction**, 
+while `shared_ptr` can be used when multiple components need **shared access**, but should be used carefully due to **heap overhead and reference counting**."
+
+3)Mutex & Deadlock
+In C++, if two threads need to access two shared resources, **how can a deadlock occur**?
+* Explain with a **simple example**.
+* How would you **prevent deadlock** in such a scenario?
+
+### ✅ **Points to Refine**
+1. **Deadlock vs Race Condition:**
+   * Your first example demonstrates a **race condition**, not a deadlock.
+   * Deadlock occurs when **two threads wait on each other’s locks**, e.g., Thread1 locks `A` then `B` while Thread2 locks `B` then `A`.
+
+2. **Preventing Deadlock:**
+   * Use consistent **lock ordering** (always lock `A` then `B`)
+   * Or use **`std::lock()`** to lock multiple mutexes safely.
+   * Your mutex example prevents race condition but doesn’t directly show deadlock prevention.
+
+### 🔹 **Example of Deadlock (for explanation)**
+mutex mtx1, mtx2;
+
+void thread1() {
+    lock_guard<mutex> lock1(mtx1);
+    this_thread::sleep_for(10ms);
+    lock_guard<mutex> lock2(mtx2); // might wait forever if thread2 locked mtx2
+}
+
+void thread2() {
+    lock_guard<mutex> lock2(mtx2);
+    this_thread::sleep_for(10ms);
+    lock_guard<mutex> lock1(mtx1); // might wait forever if thread1 locked mtx1
+}
+
+**Solution:**
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+using namespace std;
+
+mutex mtx1, mtx2;
+
+void thread1() {
+    // Lock both mutexes safely to avoid deadlock
+    lock(mtx1, mtx2);
+    lock_guard<mutex> lock1(mtx1, adopt_lock);
+    lock_guard<mutex> lock2(mtx2, adopt_lock);
+
+    // Simulate work
+    cout << "Thread 1 is working on both resources\n";
+    this_thread::sleep_for(50ms);
+}
+
+void thread2() {
+    // Lock both mutexes safely to avoid deadlock
+    lock(mtx1, mtx2);
+    lock_guard<mutex> lock1(mtx1, adopt_lock);
+    lock_guard<mutex> lock2(mtx2, adopt_lock);
+
+    // Simulate work
+    cout << "Thread 2 is working on both resources\n";
+    this_thread::sleep_for(50ms);
+}
+
+int main() {
+    thread t1(thread1);
+    thread t2(thread2);
+
+    t1.join();
+    t2.join();
+
+    cout << "Both threads finished safely without deadlock.\n";
+    return 0;
+}
+
+4) Bit Manipulation
+You have an 8-bit register `uint8_t reg = 0b01010101;`
+> 1. How do you **set bit 3** (0-based index)?
+> 2. How do you **clear bit 6**?
+> 3. How do you **toggle bit 0**?
+> 4. How do you **check if bit 5 is set**?
+> Write **C++ code snippets** for each operation.
+
+#include <iostream>
+#include <cstdint>
+#include <bitset>
+using namespace std;
+
+class Register8 {
+private:
+    uint8_t reg;
+public:
+    Register8(uint8_t value = 0) : reg(value) {}
+
+    void setBit(int n) { reg |= (1 << n); }
+    void clearBit(int n) { reg &= ~(1 << n); }
+    void toggleBit(int n) { reg ^= (1 << n); }
+    bool isBitSet(int n) const { return reg & (1 << n); }
+    void print() const { cout << bitset<8>(reg) << endl; }
+
+    uint8_t getValue() const { return reg; }
+    void setValue(uint8_t value) { reg = value; }
+};
+
+int main() {
+    Register8 r(0b01010101);
+
+    r.setBit(3);
+    cout << "After setting bit 3: "; r.print();
+
+    r.clearBit(6);
+    cout << "After clearing bit 6: "; r.print();
+
+    r.toggleBit(0);
+    cout << "After toggling bit 0: "; r.print();
+
+    cout << "Is bit 5 set? " << (r.isBitSet(5) ? "Yes" : "No") << endl;
+
+    return 0;
+}
+✅ Explanation
+Set a bit: reg |= (1 << n); → sets nth bit to 1
+Clear a bit: reg &= ~(1 << n); → sets nth bit to 0
+Toggle a bit: reg ^= (1 << n); → flips nth bit
+Check a bit: reg & (1 << n) → non-zero if bit is 1
+
+5) Object Slicing & Polymorphism**
+> Consider the following C++ classes:
+class Base {
+public:
+    virtual void show() { cout << "Base" << endl; }
+};
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived" << endl; }
+};
+
+1. What happens if you do this?
+```cpp
+Derived d;
+Base b = d;  // Copy initialization
+b.show();
+
+2. Why does this happen?
+3. How do you **fix it** so that calling `show()` executes `Derived::show()`?
+
+Answer:
+```cpp
+Derived d;
+Base b = d;  // Copy initialization
+b.show();    // Calls Base::show()
+
+* Output:
+Base
+
+* **Why?**
+  * When you do `Base b = d;`, only the **Base part** of `d` is copied into `b`.
+  * The **Derived-specific data and vptr to Derived** are lost.
+  * This is called **object slicing**.
+
+### **2️⃣ How to fix it**
+* Use a **pointer or reference** to Base instead of copying the object:
+```cpp
+Derived d;
+Base* b = &d;  // pointer to base
+b->show();      // Calls Derived::show() via vtable
+
+// OR using reference
+Base& br = d;
+br.show();      // Calls Derived::show()
+
+* Output:
+Derived
+
+* Explanation:
+  * The **vptr inside the object** points to Derived’s vtable.
+  * Virtual function call works correctly because you are **not slicing the object**.
+
+✅ **Key Interview Points**
+1. Object slicing occurs when assigning a derived object **to a base object by value**.
+2. Always use **pointers or references** to preserve polymorphic behavior.
+
+6)Question
+> 1. What is the difference between **`std::map`** and **`std::unordered_map`**?
+> 2. When would you choose one over the other in an embedded/automotive system?
+> 3. Bonus: Explain the **time complexity** for insertion, search, and deletion in both.
+
+Answer:
+std::map stores keys in sorted order using a balanced tree, so insertion, search, and deletion are O(log N), useful when order matters. 
+std::unordered_map uses a hash table with average O(1) for those operations, ideal for fast lookups when order is not important.”
+
+7)`volatile` Keyword**
+> 1. What does the `volatile` keyword do in C++?
+> 2. Why is it important in **embedded/automotive systems**?
+> 3. Give an example where **omitting `volatile`** can cause a problem.
+
+Answer:
+“`volatile` tells the compiler that a variable can change outside the program flow, so it must always read/write from memory and not optimize accesses. 
+`const volatile` is used for read-only hardware registers that can change externally, allowing reads but preventing writes.”
+
+### **1️⃣ What `volatile` does**
+
+* Tells the **compiler not to optimize accesses** to the variable.
+* Every **read/write must go directly to memory**.
+* Used when the value can change **outside the program flow**, e.g., hardware registers, ISR (Interrupt Service Routine) updates, or shared memory.
+
+### **2️⃣ Why `volatile` matters in embedded/automotive**
+
+* Example: Reading a **status register** in a loop:
+
+```cpp
+volatile uint8_t* statusReg = (volatile uint8_t*)0x4000;
+while ((*statusReg & 0x01) == 0) {
+    // wait for bit 0 to become 1
+}
+* Without `volatile`, compiler may **optimize the loop** and assume `*statusReg` never changes → infinite loop.
+
+
+### **3️⃣ `const volatile`**
+
+* `const volatile` means:
+  * **Value can change outside the program**, but **cannot be modified by the program**.
+* Commonly used for **read-only hardware registers**.
+
+```cpp
+const volatile uint8_t* sensorData = (const volatile uint8_t*)0x5000;
+uint8_t value = *sensorData; // allowed
+*sensorData = 10;            // compiler error
+
+
