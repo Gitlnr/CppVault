@@ -1,1 +1,17 @@
+1)Explain what happens in memory when a class in C++ has virtual functions.
+How is vtable structured?
+Where is vptr stored?
+What happens when we call a virtual function using a base class pointer?
+Answer:
+VTable (Virtual Table):
+Created per class that has at least one virtual function
+It contains function addresses of the virtual functions
 
+VPTR (Virtual Pointer):
+Stored inside each object instance
+It points to that class's vtable
+
+Behavior with Base Pointer:
+When calling a function like:
+Base* ptr = new Derived(); ptr->virtualFunc();
+The vptr inside the object points to Derived's vtable, so Derived's function is executed, not Base’s.
