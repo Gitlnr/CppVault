@@ -3,6 +3,8 @@ using namespace std;
 
 //used for pointer to pointer
 //When you want to modify the actual pointer (not just the value it points to), you must use a pointer to a pointer (int **ptr)
+//*ptr = &num;` **changes the address stored in the original pointer (`p`)**,
+//so now `p` points to a **new memory location (`num`)**.
 void update( int** ptr){
   static int num = 50;
   *ptr = &num; //ptr points to num
