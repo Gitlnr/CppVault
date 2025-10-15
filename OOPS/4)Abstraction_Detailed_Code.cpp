@@ -5,6 +5,17 @@ and any class derived from an abstract class must implement these functions.
 
 Pure Virtual Functions: A pure virtual function is a function that is declared in the base class but has no definition. 
 It is marked by = 0 in the function declaration. This enforces that any derived class must provide an implementation of that function.
+
+If a pure virtual function exists in an abstract class,
+then every derived class must either:
+
+Implement that pure virtual function,
+→ then it becomes a concrete (instantiable) class.
+
+OR
+
+Not implement it,
+→ then that derived class itself remains abstract (you cannot create objects of it).
 */
 
 #include <iostream>
