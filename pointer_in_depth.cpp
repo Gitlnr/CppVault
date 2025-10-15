@@ -192,6 +192,11 @@ int main() {
 
     
 }*/
+  int main() {
+    // unique_ptr to Base, but pointing to Derived
+    unique_ptr<Base> b = make_unique<Derived>();
+    b->show();  // calls Derived::show()
+} // automatically calls Derived destructor, then Base destructor
 
 ////////////////////////////////Implement malloc & free in C++////////////////////////////////
 /*
