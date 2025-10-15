@@ -174,6 +174,64 @@ int main() {
     std::cout << "Both threads completed without deadlock" << std::endl;
     return 0;
 }
+//
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+using namespace std;
+
+mutex mtx1, mtx2;
+
+class Solution {
+public:
+    void thread1() {
+        lock(mtx1, mtx2);  // lock both without deadlock
+        lock_guard<mutex> lock1(mtx1, adopt_lock);
+        lock_guard<mutex> lock2(mtx2, adopt_lock);
+
+        cout << "Thread1 locked" << endl;
+        this_thread::sleep_for(chrono::milliseconds(10));
+        cout << "Thread1 released" << endl;
+    }
+
+    void thread2() {
+        lock(mtx1, mtx2);
+        lock_guard<mutex> lock1(mtx1, adopt_lock);
+        lock_guard<mutex> lock2(mtx2, adopt_lock);
+
+        cout << "Thread2 locked" << endl;
+        this_thread::sleep_for(chrono::milliseconds(10));
+        cout << "Thread2 released" << endl;
+    }
+};
+
+int main() {
+    Solution Sol;
+    thread t1(&Solution::thread1, &Sol);
+    thread t2(&Solution::thread2, &Sol);
+
+/*Solution* Sol = new Solution();  // dynamically allocate
+thread t1(&Solution::thread1, Sol);  // pass pointer to member function
+thread t2(&Solution::thread2, Sol);
+
+t1.join();
+t2.join();
+
+delete Sol;  // free the dynamically allocated memory
+*/
+/*unique_ptr<Solution> Sol = make_unique<Solution>();
+thread t1(&Solution::thread1, Sol.get());
+thread t2(&Solution::thread2, Sol.get());
+t1.join();
+t2.join();
+//Without .get(), you’d be passing the unique_ptr itself, which cannot be converted automatically to Solution*, so the code won’t compile.
+*/
+    t1.join();
+    t2.join();
+
+    return 0;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 What are condition variables?
