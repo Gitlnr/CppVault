@@ -91,7 +91,7 @@ struct Smartphone {
     float* price;     // Pointer to float
 
     // Constructor to initialize pointer members
-    Smartphone() : memorySize(nullptr), price(nullptr) {}
+    Smartphone() : modelName(""),memorySize(nullptr), color(""),price(nullptr) {}
     
     // Destructor to free dynamically allocated memory
     ~Smartphone() {
