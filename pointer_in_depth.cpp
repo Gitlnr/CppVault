@@ -119,6 +119,26 @@ void func() {
 } // ❌ Memory leak: The first allocated memory (holding 10) was lost and never deleted
 */
 
+  How to fix this?
+    //Option1:
+  void func() {
+    int *p = new int(10);  // allocate 10
+    int *q = new int(20);  // allocate 20
+
+    delete p;  // free the first allocation
+    p = q;     // now p points to q
+
+    delete p;  // free q
+}
+  //Option2:
+#include <memory>
+void func() {
+    std::unique_ptr<int> p = std::make_unique<int>(10);
+    std::unique_ptr<int> q = std::make_unique<int>(20);
+
+    p = std::move(q);  // automatically deletes old memory held by p
+} // memory is automatically freed when unique_ptr goes out of scope
+
 //////////////////////////////// Smart Pointers (unique_ptr, shared_ptr, weak_ptr)////////////////////////////////
 /*
 class Test {
