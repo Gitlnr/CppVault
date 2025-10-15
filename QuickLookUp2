@@ -465,3 +465,102 @@ int main() {
 * O(N) time, O(1) space.
 * Safe for larger `n` compared to recursive solution.
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+reverse a string
+
+class Solution{
+   public:
+    string MoveZeros(const string& str){
+        int n =str.length();
+        if(str.empty())return str;
+        string result = "";
+        for(int i=n-1;i>=0;i--){
+            result+= str[i];
+        }
+        return result;
+
+    }
+};
+int main() {
+    Solution Sol;
+    string result = Sol.MoveZeros("Amazon");
+        cout<<result<<endl;
+    return 0;
+}
+or ;;;;;;;;;
+class Solution {
+public:
+    string reverseString(const string& str) {
+        if (str.empty()) return str;
+        // Efficiently reverse the string using reverse iterators
+        string result(str.rbegin(), str.rend());
+        return result;
+    }
+};
+
+or;;;;;;;;;;;;;;;;;;
+class Solution {
+public:
+    string reverseString(const string& str) {
+        if (str.empty()) return str;
+        int n = str.size();
+        string result(n,' ');
+        for(int i=0;i<n;i++){
+          result[i]= str[n-1-i]; 
+        }
+        return result;
+    }
+};
+
+/////////////////////////ReverseInteger//////////
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int ReverseInteger(int num) {
+        int rev =0;
+        while(num!=0){
+            int digit = num%10;
+            num=num/10;
+            rev= rev*10+digit;
+        }
+        return rev;
+    }
+};
+
+int main() {
+    Solution Sol;
+    int result = Sol.ReverseInteger(12345);
+    cout << result << endl;  // Output: 54321
+    return 0;
+}
+
+////////////////////////reverseBits///////////
+#include<cstdint>
+using namespace std;
+
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        uint32_t result = 0;
+        for(int i = 0; i < 32; i++) {
+            uint32_t bit = n & 1;
+            result |= (bit << (31 - i));
+            n >>= 1;
+        }
+        return result;
+}
+
+};
+
+int main() {
+    Solution Sol;
+    uint32_t n = 5;
+    uint32_t result = Sol.reverseBits(n);
+    cout << result << endl;  // Output: 2684354560
+    ///2^31 + 2^29 = 2147483648 + 536870912 = 2684354560
+
+    return 0;
+}
