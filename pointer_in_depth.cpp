@@ -50,6 +50,30 @@ int main() {
     update(&ptr); //always pass the address ,you cant passs *ptr
     cout << "After Update ptr: " << *ptr <<endl; // Output: 50 (p now points to `num`)
     cout <<endl;
+  /*
+int main() {
+    int a = 10;
+    int* p = &a;      // p is a pointer to int
+    int** pp = &p;    // pp is a pointer to pointer to int
+
+    int num = 20;
+
+    // Changing what 'p' points to — through 'pp'
+    *pp = &num;   // same as: p = &num;
+
+    cout << "a = " << a << endl;
+    cout << "num = " << num << endl;
+    cout << "*p = " << *p << endl;
+    cout << "**pp = " << **pp << endl;
+    cout << "p (address stored in p) = " << p << endl;
+    cout << "&a (address of a) = " << &a << endl;
+    cout << "&num (address of num) = " << &num << endl;
+    cout << "&p (address of pointer p) = " << &p << endl;
+    cout << "pp (address stored in pp) = " << pp << endl;
+
+    return 0;
+}
+*/
 
   int *ptr1 = &x;
     cout << "Modifies the local copy of ptr, NOT the original pointer" <<endl;
