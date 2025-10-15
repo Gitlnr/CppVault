@@ -1081,7 +1081,7 @@ void producer() {
 void consumer() {
     for(int i=1;i<=5;i++){
         unique_lock<mutex> lock(mtx);
-       // cv.wait(lock, []{ return !q.empty(); }); // wait until q not empty //lambda
+       // cv.wait(lock, []{ return !q.empty(); }); // wait until producer adds something
        while (q.empty()){
           cv.wait(lock);
        }
