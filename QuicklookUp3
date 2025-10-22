@@ -1,0 +1,54 @@
+In C++, when you include standard library headers like `<map>`, `<vector>`, `<string>`, `<algorithm>`, etc., they provide **containers, algorithms, and utility functions**.
+In an interview, if they ask you to “name some functions you used from the C++ library,” they usually want **specific member functions or standard algorithms**
+you have actually used.
+
+### 1️⃣ Containers
+
+**Example:** `<map>`, `<vector>`, `<set>`, `<unordered_map>`
+
+**Common member functions you might mention:**
+
+* `map` / `unordered_map`:
+
+  * `insert()` → add an element
+  * `find()` → search for a key
+  * `erase()` → remove an element
+  * `size()` → get number of elements
+  * `clear()` → remove all elements
+* `vector`:
+
+  * `push_back()` → add element at end
+  * `pop_back()` → remove last element
+  * `size()` → number of elements
+  * `at(index)` → access element with bounds check
+  * `begin()/end()` → iterators for loops
+* `set`:
+
+  * `insert()`, `erase()`, `find()`
+
+### 2️⃣ String functions (`<string>`)
+
+* `length()` / `size()` → get string length
+* `substr(pos, len)` → substring
+* `find()` → search for substring
+* `append()` → add to string
+* `compare()` → compare strings
+* `c_str()` → get C-style string
+
+### 3️⃣ Algorithms (`<algorithm>`)
+
+* `sort(begin, end)` → sort elements
+* `reverse(begin, end)` → reverse container
+* `find(begin, end, value)` → find element
+* `count(begin, end, value)` → count occurrences
+* `max_element(begin, end)`, `min_element(begin, end)` → get max/min
+
+### 4️⃣ Utility
+
+* `pair` (`<utility>`) → `make_pair()`
+* `swap()` → swap two values
+* `std::tie()` → unpack pair/tuple
+
+💡 **Tip for interview:**
+Instead of just naming containers, **mention a few functions you actually used** and maybe give a one-line example:
+> “I often use `std::map::insert()` and `std::map::find()` to store and lookup key-value pairs efficiently.”
