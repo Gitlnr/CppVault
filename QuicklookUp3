@@ -3,11 +3,8 @@ In an interview, if they ask you to “name some functions you used from the C++
 you have actually used.
 
 ### 1️⃣ Containers
-
 **Example:** `<map>`, `<vector>`, `<set>`, `<unordered_map>`
-
 **Common member functions you might mention:**
-
 * `map` / `unordered_map`:
 
   * `insert()` → add an element
@@ -27,7 +24,6 @@ you have actually used.
   * `insert()`, `erase()`, `find()`
 
 ### 2️⃣ String functions (`<string>`)
-
 * `length()` / `size()` → get string length
 * `substr(pos, len)` → substring
 * `find()` → search for substring
@@ -36,7 +32,6 @@ you have actually used.
 * `c_str()` → get C-style string
 
 ### 3️⃣ Algorithms (`<algorithm>`)
-
 * `sort(begin, end)` → sort elements
 * `reverse(begin, end)` → reverse container
 * `find(begin, end, value)` → find element
@@ -44,7 +39,6 @@ you have actually used.
 * `max_element(begin, end)`, `min_element(begin, end)` → get max/min
 
 ### 4️⃣ Utility
-
 * `pair` (`<utility>`) → `make_pair()`
 * `swap()` → swap two values
 * `std::tie()` → unpack pair/tuple
