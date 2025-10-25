@@ -8,9 +8,33 @@ p = &b;       // ✅ now p points to b
 
 int& r = a;   // r refers to a
 // r = b; ❌ assigns value of b to a, doesn’t rebind r
-```
+
+🔹 Pointer (p)
+A pointer stores the memory address of another variable.
+You can reassign it to point to different variables at any time.
+To access or change the value it points to, you use the * (dereference) operator.
+It can also be nullptr (point to nothing).
+
+int a = 10, b = 20;
+int* p = &a;   // p points to a
+p = &b;        // now p points to b (address changed)
+
+🔹 Reference (r)
+A reference is just an alias (another name) for an existing variable.
+Once initialized, it cannot be made to refer to another variable.
+You use it like a normal variable—no need for * or &.
+
+int c = 30, d = 40;
+int& r = c;   // r refers to c
+r = d;        // assigns the value of d to c (not a rebinding!)
+
+
+After r = d;,
+r still refers to c
+c now becomes 40 (because you assigned d’s value to it)
+
 So “p can change” means **the address stored in p can change** —
-but a **reference always remains bound** to the same variable.
+but a **reference always remains bound** to the same variable address.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
