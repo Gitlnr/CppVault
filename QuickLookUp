@@ -817,6 +817,10 @@ int main() {
 
     cout << "Program still running fine!\n";
 }
+stoi only converts strings that actually represent integers.
+"123" → 123 ✅
+"12abc" → throws invalid_argument because parsing stops at first invalid character.
+"999999999999999999999999" → throws out_of_range because number exceeds int limit.
 
 ### **Output:**
 Invalid input: stoi
