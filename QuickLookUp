@@ -917,6 +917,15 @@ Count: 2
 Used with `shared_ptr` to **avoid circular references**.
 It does **not** increase the reference count. only act as an observer
 
+A weak_ptr does not keep the object alive.
+It lets you observe or access the object only if it still exists.
+You can safely check this with wp.lock():
+Returns a valid shared_ptr → object exists
+Returns nullptr → object has been deleted
+So yes, you mainly use weak_ptr to:
+Avoid circular references (prevent memory leaks)
+Check if an object is still alive before accessing it
+
 ```cpp
 #include <iostream>
 #include <memory>
@@ -928,8 +937,11 @@ int main() {
 
     cout << "Count: " << p1.use_count() << endl; // 1
 
-    if (auto sp = wp.lock()) // try to get shared_ptr
-        cout << *sp << endl; // 100
+    if (auto sp = w.lock()) {
+      cout << *sp << endl; // won’t execute, object deleted
+    } else {
+        cout << "Object no longer exists!" << endl; // safe check
+    }
 }
 
 ✅ Doesn’t keep the object alive — safe to check if it still exists.
