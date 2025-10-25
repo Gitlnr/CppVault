@@ -1,5 +1,5 @@
 * ✅ **Pointer (`p`)** → can be **reassigned** to point to another variable (its stored address can change).
-* ✅ **Reference (`r`)** → is an **alias**; once bound to a variable, it **cannot be changed** to refer to another one.
+* ✅ **Reference (`r`)** → is an **alias**; once bound to a variable, it **cannot be changed** to refer to another variables address.
 
 Example:
 int a = 10, b = 20;
