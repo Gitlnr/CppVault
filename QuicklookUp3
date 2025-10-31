@@ -1,4 +1,24 @@
-In C++, when you include standard library headers like `<map>`, `<vector>`, `<string>`, `<algorithm>`, etc., they provide **containers, algorithms, and utility functions**.
+1)Storage Classes in C / C++
+
+extern
+Used to declare a global variable that is defined elsewhere.
+Can be accessed from anywhere in the project.
+
+auto
+In modern C++, it lets the compiler deduce the data type automatically.
+Often used with smart pointers, iterators, or complex types.
+
+register
+A hint to the compiler to store the variable in a CPU register for faster access.
+Cannot take the variable’s address (&).
+
+static
+Lifetime of the variable is entire program run (exists throughout the application).
+Value is retained between function calls.
+At compile time, memory is allocated once.
+
+
+2)In C++, when you include standard library headers like `<map>`, `<vector>`, `<string>`, `<algorithm>`, etc., they provide **containers, algorithms, and utility functions**.
 In an interview, if they ask you to “name some functions you used from the C++ library,” they usually want **specific member functions or standard algorithms**
 you have actually used.
 
