@@ -66,3 +66,7 @@ you have actually used.
 💡 **Tip for interview:**
 Instead of just naming containers, **mention a few functions you actually used** and maybe give a one-line example:
 > “I often use `std::map::insert()` and `std::map::find()` to store and lookup key-value pairs efficiently.”
+
+3) Debugger
+I mostly rely on compiler warnings, IDE debugging, and logging to analyze and fix issues. 
+I am aware of tools like GDB, Valgrind, and QNX Momentics for embedded debugging, and I am ready to learn and use them as needed.
