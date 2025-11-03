@@ -50,7 +50,9 @@
 
 - **Advantages:**
   - Allows allocation of large blocks of memory.
-  - Memory can persist beyond the scope of a function.
+  - Memory can persist beyond the scope of a function nemas:
+    ->When you dynamically allocate memory using new (or malloc in C),that memory is not automatically destroyed when the function ends.
+    It stays allocated (it “persists”) until you explicitly delete or free it.
 
 - **Disadvantages:**
   - More prone to errors like memory leaks, double deletion, or dangling pointers.
