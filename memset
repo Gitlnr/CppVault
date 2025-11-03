@@ -168,4 +168,45 @@ int main() {
 
     return 0;
 }
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Additional note on when to use static_cast<> and dynamic_cast<>:
+You can use **`dynamic_cast`** only when you’re working with **pointers or references to polymorphic classes** — i.e., classes that have **at least one virtual function**.
 
+### ✅ Example where `dynamic_cast` is valid
+```cpp
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual void show() { cout << "Base\n"; }  // virtual = polymorphic
+};
+
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived\n"; }
+};
+
+int main() {
+    Base* b = new Derived();        // Base pointer to Derived object
+    Derived* d = dynamic_cast<Derived*>(b);  // safe downcast
+
+    if (d)
+        d->show();  // prints "Derived"
+    else
+        cout << "Cast failed\n";
+
+    delete b;
+    return 0;
+}
+
+### 🧠 Summary
+
+| Cast type      | Used for                                               | Example                           |
+| -------------- | ------------------------------------------------------ | --------------------------------- |
+| `static_cast`  | Basic conversions (int↔float, char→int, etc.)          | `static_cast<int>(c)`             |
+| `dynamic_cast` | Safe casting in class hierarchies (requires `virtual`) | `dynamic_cast<Derived*>(basePtr)` |
+
+So:
+* Use `static_cast` for **built-in or related types**.
+* Use `dynamic_cast` for **class inheritance (runtime-checked)**.
