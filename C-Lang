@@ -1,0 +1,109 @@
+### ✅ Standard practices
+
+1. **Structs for data** – similar to “objects”:
+
+```c
+struct Student {
+    char name[50];
+    int age;
+};
+```
+
+2. **Functions operating on structs** – “methods”:
+
+```c
+void printStudent(struct Student *s) {
+    printf("Name: %s, Age: %d\n", s->name, s->age);
+}
+
+void setAge(struct Student *s, int age) {
+    s->age = age;
+}
+```
+
+* **Pointers are used** when you want to modify the original struct or avoid copying large data.
+* **Pass by value** is used when you don’t need to modify it.
+
+3. **No constructors or destructors**:
+
+* Initialization is done via functions (e.g., `createStudent`)
+* Cleanup (if using dynamic memory) is done manually with `free()`.
+
+4. **No access modifiers**:
+
+* All struct members are “public”
+* Encapsulation is achieved by **only exposing functions in headers** and keeping struct definitions private in `.c` files (common industry pattern).
+
+---
+
+### ✅ Real-world pattern example
+
+**student.h**
+
+```c
+#ifndef STUDENT_H
+#define STUDENT_H
+
+struct Student;
+
+struct Student* createStudent(const char *name, int age);
+void printStudent(struct Student *s);
+void setAge(struct Student *s, int age);
+void freeStudent(struct Student *s);
+
+#endif
+```
+
+**student.c**
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "student.h"
+
+struct Student {
+    char name[50];
+    int age;
+};
+
+struct Student* createStudent(const char *name, int age) {
+    struct Student *s = malloc(sizeof(struct Student));
+    strcpy(s->name, name);
+    s->age = age;
+    return s;
+}
+
+void printStudent(struct Student *s) {
+    printf("Name: %s, Age: %d\n", s->name, s->age);
+}
+
+void setAge(struct Student *s, int age) {
+    s->age = age;
+}
+
+void freeStudent(struct Student *s) {
+    free(s);
+}
+```
+
+**main.c**
+
+```c
+#include "student.h"
+
+int main() {
+    struct Student *s1 = createStudent("Alice", 20);
+    printStudent(s1);
+    setAge(s1, 21);
+    printStudent(s1);
+    freeStudent(s1);
+    return 0;
+}
+
+
+### 🔹 Why this is industry-standard:
+1. Uses **struct + pointer + functions** → safe and efficient.
+2. Encapsulates details by hiding struct definition in `.c` file.
+3. Manual memory management is explicit.
+4. Works perfectly in **embedded systems, OS code, networking libraries** — all pure C projects.
