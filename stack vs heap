@@ -93,6 +93,14 @@ int main() {
     return 0;
 }
 
+How to avoid it double deletion causing undefined behavior:
+
+Always set pointers to nullptr after deleting:
+delete ptr;
+ptr = nullptr;
+
+If you try to delete nullptr, it’s safe — it does nothing.
+delete nullptr; // OK
 
 
 
