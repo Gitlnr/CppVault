@@ -14,6 +14,7 @@ void update( int** ptr){
 void updatePtr(int* ptr){
   static int num = 50;
   ptr = &num; //ptr still points to x, not num
+  //Changing ptr = &num; only changes the local copy inside the function Original ptr in main() remains unchanged.
 }
 int main() {
 
