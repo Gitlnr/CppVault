@@ -6,7 +6,8 @@ using namespace std;
 //*ptr = &num;` **changes the address stored in the original pointer (`p`)**,
 //so now `p` points to a **new memory location (`num`)**.
 void update( int** ptr){
-  static int num = 50;
+  static int num = 50; //Normally, local variables are created on the stack and destroyed when the function ends. //static makes them persist for the lifetime of the program.
+                       //They retain their value between function calls.
   *ptr = &num; //ptr points to num
 }
 //Only gets a copy of p, NOT modifying original p
