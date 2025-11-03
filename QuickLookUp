@@ -1142,25 +1142,26 @@ int main() {
 * Reading a string from multiple threads is safe **if nobody modifies it**.
 * Use `mutex` if multiple threads might modify the same string.
 
-```cpp
-#include <string>
-#include <mutex>
-#include <thread>
 #include <iostream>
+#include <string>
+#include <thread>
+#include <mutex>
 
 std::string data = "Hello";
 std::mutex mtx;
 
 void appendData() {
-    lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);  // <-- std:: added
     data += " World";
 }
 
 int main() {
     std::thread t1(appendData);
     std::thread t2(appendData);
+
     t1.join();
     t2.join();
+
     std::cout << data << std::endl;
 }
 
