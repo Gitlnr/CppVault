@@ -282,8 +282,8 @@ int main() {
 * You usually implement it by writing a **custom copy constructor** (and assignment operator if needed).
 
 💡 Analogy:
-Shallow copy → Two people sharing the same notebook.
-Deep copy → Two people having their own copies of the notebook.
+Shallow copy → Two people sharing the same notebook. //Shares the same memory
+Deep copy → Two people having their own copies of the notebook. //Each object has its own memory
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
