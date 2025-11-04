@@ -174,3 +174,121 @@ but they’re used in **different places** and for **different purposes**.
 > 🚗 **CAN** → For ECUs *inside* the car
 > 🧲 **RS-232C** → For *simple* device-to-device link
 > 🌐 **TCP/IP** → For *internet or cloud* communication
+
+## 🚗 **Main Software Development Domains in Automotive Industry**
+
+Modern cars are like “computers on wheels” — hundreds of ECUs, millions of lines of code.
+Each team or department works on a specific **software domain** or **vehicle function**.
+
+### 🧩 **1️⃣ Powertrain / Engine Software**
+* Controls engine, transmission, and drivetrain.
+* Handles fuel injection, torque, gear shifting, emissions, etc.
+* Requires **real-time**, safety-critical software.
+
+**Example:**
+Engine Control Unit (ECU), Transmission Control Unit (TCU)
+
+**Key Skills:** Embedded C, AUTOSAR Classic, control algorithms.
+
+
+### ⚙️ **2️⃣ Chassis & Safety Systems**
+* Controls brakes, steering, stability, airbags, ABS, and traction control.
+* Very **time-critical** and **ASIL-rated** (ISO 26262 safety).
+
+**Example:**
+Brake ECU, Steering ECU, Airbag ECU
+
+**Key Skills:** Model-based design (MATLAB/Simulink), real-time OS.
+
+---
+
+### 🧠 **3️⃣ ADAS / Autonomous Driving**
+
+(ADAS = Advanced Driver Assistance Systems)
+
+* Includes cameras, radar, lidar, AI, object detection, lane keeping, adaptive cruise control, automatic parking.
+* Uses **AI, image processing, and sensor fusion**.
+
+**Key Skills:** C++, Python, ROS, perception algorithms, embedded Linux.
+
+---
+
+### 🎵 **4️⃣ Infotainment System (IVI – In-Vehicle Infotainment)**
+
+* Multimedia, navigation, voice assistant, smartphone connectivity (Apple CarPlay, Android Auto).
+* Runs on **Linux or Android Automotive OS**.
+
+**Key Skills:** C++, Qt/QML, Android Automotive, UI/UX, HMI development.
+
+---
+
+### 📡 **5️⃣ Telematics / Connectivity**
+
+* Connects car to the cloud — sends data, receives updates.
+* Enables emergency calls, OTA (Over-the-Air) updates, GPS tracking, vehicle health, and remote unlock/start.
+* Includes **Telematics Control Unit (TCU)**.
+
+**Key Skills:** TCP/IP, MQTT, LTE/5G, cybersecurity, backend communication.
+
+---
+
+### 🔐 **6️⃣ Digital Key / Body & Security**
+
+* Handles smart keyless entry, start authorization, door locks, immobilizer, alarm, etc.
+* Uses **BLE (Bluetooth Low Energy)**, **NFC**, or **Ultra-Wideband (UWB)** with smartphones.
+
+**Key Skills:** Embedded C, BLE, NFC, UWB, cryptography, secure communication.
+
+---
+
+### ⚙️ **7️⃣ Vehicle Networking & Architecture**
+
+* Responsible for **in-vehicle communication** (CAN, LIN, FlexRay, Ethernet).
+* Handles **Gateway ECUs** and network management between domains.
+
+**Key Skills:** CANoe, CAPL, Vector tools, AUTOSAR, diagnostic protocols (UDS).
+
+---
+
+### 🖥️ **8️⃣ Diagnostic & Calibration Tools**
+
+* Used by service centers or engineers to read ECU data, fault codes (DTCs), and tune parameters.
+
+**Key Skills:** UDS (ISO 14229), XCP, CCP, CANape, INCA.
+
+### 🌐 **9️⃣ Cloud / Backend Development**
+
+* Works on the cloud servers and mobile apps that connect to vehicles (for telematics, OTA, digital keys, etc.).
+
+**Key Skills:** Cloud platforms (AWS, Azure), REST APIs, data analytics, cybersecurity.
+
+---
+
+### ⚡ **10️⃣ Electric Vehicle (EV) & Battery Management**
+
+* Controls battery health, charging, and thermal systems.
+* Includes Battery Management System (BMS), Onboard Charger (OBC), DC/DC converter software.
+
+**Key Skills:** Embedded C, battery modeling, control systems.
+
+## 📚 **Summary Table**
+
+| Domain           | Example System | Focus Area                 | Typical Tech               |
+| ---------------- | -------------- | -------------------------- | -------------------------- |
+| Powertrain       | Engine ECU     | Engine control             | Embedded C, AUTOSAR        |
+| Chassis & Safety | Brake ECU      | Safety functions           | RTOS, MATLAB               |
+| ADAS             | Camera ECU     | Driver assist / automation | AI, C++, ROS               |
+| Infotainment     | IVI            | UI, media, navigation      | Android, Qt                |
+| Telematics       | TCU            | Cloud connectivity         | TCP/IP, LTE, MQTT          |
+| Digital Key      | Body ECU       | Smart access               | BLE, UWB, Security         |
+| Networking       | Gateway ECU    | Communication              | CAN, Ethernet              |
+| Diagnostics      | Service tools  | Debugging / calibration    | UDS, XCP                   |
+| Cloud Backend    | Server / App   | Vehicle data management    | Cloud, APIs                |
+| EV Systems       | BMS, Charger   | Electric powertrain        | Embedded C, control theory |
+
+So in short:
+
+> * **Infotainment** → Entertainment + UI
+> * **Telematics** → Car ↔ Cloud
+> * **Digital Key** → Secure access and control
+> * **CAN / ECUs** → Communication backbone inside car
