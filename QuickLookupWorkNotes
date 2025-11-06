@@ -8,3 +8,58 @@ You are doing the **second one** ✅ — developing *applications using existing
 ### ⚙️ Example (optional)
 > “For example, I used the VCL framework to design the main GUI screen of our control software, 
    connect UI buttons to C++ functions, and communicate with external devices via LAN.”
+
+2)Scrum Vs Agile Vs Waterfall
+* **Scrum** = a **team-based working style** inside **Agile development**.
+* **Agile** = a **flexible way** of developing software in **small steps**, instead of doing everything at once like in “Waterfall”.
+* In Agile/Scrum, work is divided into **short cycles (called Sprints)** — usually 2 or 3 weeks.
+* Each Sprint delivers a **small working feature** that can be tested or shown.
+
+### 👥 Scrum Roles
+* **Product Owner** → decides what features to build.
+* **Scrum Master** → manages process and removes obstacles.
+* **Developers / Engineers** → actually code and test.
+
+### ⚙️ Example
+Imagine you are developing a **laser marking control app**.
+
+Instead of planning 6 months for the whole app,
+you plan **2-week Sprints** like this:
+
+| Sprint   | Goal                                           |
+| -------- | ---------------------------------------------- |
+| Sprint 1 | Make the UI screen open and connect to printer |
+| Sprint 2 | Add function to send marking data              |
+| Sprint 3 | Add log output and error handling              |
+
+After each Sprint → you **review, test, and adjust plans** for the next one.
+
+### 🏁 In short
+> “You’ll be added to a Scrum team” means you’ll work in **a small Agile team**, building software 
+**step by step in short cycles**, continuously improving based on feedback.
+
+### 🌀 **Agile / Scrum**
+* Work is done in **short cycles (Sprints)**, with frequent updates and feedback.
+* **Tool:** usually **JIRA** (by Atlassian).
+
+  * JIRA helps manage **tasks, sprints, and progress** visually on boards.
+  * Similar tool: **Redmine**, also used for Agile but simpler and open-source.
+  * ✅ *JIRA = more modern, widely used globally*
+  * ⚙️ *Redmine = lighter, used in some Japanese companies*
+
+### 💧 **Waterfall**
+* Work is done **step by step in fixed order**:
+  ① Requirement → ② Design → ③ Coding → ④ Testing → ⑤ Release
+* Once one phase is finished, you **don’t go back** easily.
+* Good for projects where **requirements never change** (e.g., hardware).
+
+### ⚖️ Summary Table
+| Method            | Style                   | Tool           | Feedback timing |
+| ----------------- | ----------------------- | -------------- | --------------- |
+| **Agile / Scrum** | Iterative (small steps) | JIRA / Redmine | Continuous      |
+| **Waterfall**     | Sequential (one-way)    | Excel / Docs   | At the end      |
+
+**In short:**
+> Agile (Scrum) = flexible, uses tools like **JIRA**
+> Waterfall = fixed steps, slower feedback
+
