@@ -287,8 +287,9 @@ Brake ECU, Steering ECU, Airbag ECU
 | EV Systems       | BMS, Charger   | Electric powertrain        | Embedded C, control theory |
 
 So in short:
-
 > * **Infotainment** → Entertainment + UI
 > * **Telematics** → Car ↔ Cloud
 > * **Digital Key** → Secure access and control
 > * **CAN / ECUs** → Communication backbone inside car
+Image in short: A vehicle consists of multiple ECU(nothing but embedded system) ,each ECU has one or more microcontrollers, power supply circuit 
+and interface for CAN( used for communication)
