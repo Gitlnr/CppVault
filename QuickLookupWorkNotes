@@ -1,0 +1,9 @@
+| Term                                          | Meaning                                                                        |
+| --------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Framework development**                     | Creating a reusable foundation or library for others to build applications on. |
+| **Application development using a framework** | Using an existing framework (like VCL/MFC) to make a specific product or tool. |
+
+You are doing the **second one** ✅ — developing *applications using existing frameworks*, not *creating a new framework*.
+### ⚙️ Example (optional)
+> “For example, I used the VCL framework to design the main GUI screen of our control software, 
+   connect UI buttons to C++ functions, and communicate with external devices via LAN.”
