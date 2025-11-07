@@ -8,6 +8,7 @@ You are doing the **second one** ✅ — developing *applications using existing
 ### ⚙️ Example (optional)
 > “For example, I used the VCL framework to design the main GUI screen of our control software, 
    connect UI buttons to C++ functions, and communicate with external devices via LAN.”
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 2)Scrum Vs Agile Vs Waterfall
 * **Scrum** = a **team-based working style** inside **Agile development**.
@@ -62,4 +63,17 @@ After each Sprint → you **review, test, and adjust plans** for the next one.
 **In short:**
 > Agile (Scrum) = flexible, uses tools like **JIRA**
 > Waterfall = fixed steps, slower feedback
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+3)When designing software, the most important things are:
+
+1. **Scalability** – the design should handle future growth without major rework.
+2. **Maintainability** – the code should be easy to understand, modify, and extend.
+3. **Reliability** – the system must work consistently with minimal failures.
+4. **Modularity** – clear separation of components to reduce coupling and increase flexibility.
+5. **Performance** – the design should ensure efficient resource usage and response time.
+6. **Simplicity** – avoid unnecessary complexity; keep the design clean and logical.
+7. **Testability** – the design must allow easy unit and integration testing.
+
+Super concise answer (if interviewer wants very short):
+Scalability, maintainability, reliability, modularity, and simplicity.
